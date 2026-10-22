@@ -1,0 +1,145 @@
+---
+import Base from '../layouts/Base.astro';
+import Monogram from '../components/Monogram.astro';
+import { site } from '../content/site';
+import { cv } from '../content/cv';
+import { cases } from '../content/cases';
+import { method } from '../content/method';
+import { projects } from '../content/projects';
+import { workstation } from '../content/workstation';
+import { formatDay, formatMonth, growth, snapshot } from '../data/snapshot';
+
+const host = (url: string) => url.replace('https://', '').replace('www.', '').replace(/\/$/, '');
+---
+
+<Base title="CV · Jordan Taillefer" description="CV de Jordan Taillefer, product developer fullstack TypeScript." noindex>
+  <main class="cv">
+    <header class="cv-head">
+      <div>
+        <h1>{site.name}</h1>
+        <p class="role">{site.role} fullstack TypeScript · {site.status} · {site.location}</p>
+        <p class="pitch">{site.headline.join(' ')}</p>
+      </div>
+      <Monogram size={84} idPrefix="cv" />
+    </header>
+    <p class="contact">
+      {[
+        <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>,
+        <span>{cv.phone}</span>,
+        <a href={site.contact.linkedin}>{host(site.contact.linkedin)}</a>,
+        <a href={site.contact.github}>{host(site.contact.github)}</a>,
+        <a href="https://jordantaillefer.github.io">jordantaillefer.github.io</a>,
+      ].map((item, i) => <>{i > 0 && <span class="sep"> · </span>}{item}</>)}
+    </p>
+
+    <section>
+      <h2>Profil</h2>
+      <p>{site.intro} {site.credibility}</p>
+      <p class="now"><strong>En ce moment :</strong> {site.now.text}.</p>
+    </section>
+
+    <section>
+      <h2>Mon travail actuel · Pilote (DITP)</h2>
+      <p>{site.pilote.context} {site.pilote.role}</p>
+      <p>
+        Commits par mois : {Math.round(growth.baselineAvg)} en moyenne en 2025, {growth.reference.commits} en {formatMonth(growth.reference.month)} (×{Math.floor(growth.ratio)}),
+        avec {snapshot.pilote.categories.refactor} refactors pour {snapshot.pilote.categories.feature} features. Mesuré le {formatDay(snapshot.measuredAt)}.
+      </p>
+      <div class="cases">
+        {
+          cases.map((study) => (
+            <article>
+              <h3>{study.title} <span>· {study.period}</span></h3>
+              <ul>
+                {study.metrics.slice(0, 4).map((m) => (
+                  <li>
+                    {m.label} : {m.before && <s>{m.before}</s>} {m.before && '→ '}<strong>{m.after}</strong>
+                  </li>
+                ))}
+              </ul>
+              <p class="lesson">{study.lesson}</p>
+            </article>
+          ))
+        }
+      </div>
+      <p>{site.pilote.aiInProduct}</p>
+    </section>
+
+    <section>
+      <h2>Méthode · augmenté, pas automatisé</h2>
+      <ol class="method">
+        {method.map((step) => <li><strong>{step.title}</strong> <span>({step.tool})</span></li>)}
+      </ol>
+      <p>Pendant que l'agent avance, je travaille sur une autre feature dans un autre worktree. L'IA prépare le terrain ; les humains décident.</p>
+    </section>
+
+    <section class="two">
+      <div>
+        <h2>Outillage</h2>
+        <ul>
+          {workstation.tools.map((tool) => <li><strong>{tool.name}</strong> · {tool.what}</li>)}
+          <li><strong>Skills Claude Code</strong> · {workstation.skills.map((s) => s.name).join(', ')}</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Projets perso</h2>
+        <ul>
+          {
+            projects.map((project) => (
+              <li>
+                <strong>{project.name}</strong> · {project.pitch}
+                {project.id === 'kauri' && ` ${snapshot.kauri.commits} commits, ${snapshot.kauri.specs} specs, ${snapshot.kauri.testFiles} fichiers de tests.`}
+                {project.url && <> <a href={project.url}>{host(project.url)}</a></>}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Stack</h2>
+      <p class="stack">{cv.stack.join(' · ')}</p>
+    </section>
+
+    <footer class="cv-foot">
+      {site.credibility} {cv.company.name} · SIREN {cv.company.siren}.
+    </footer>
+  </main>
+</Base>
+
+<style is:global>
+  @page { size: A4; margin: 12mm; }
+  html:has(.cv), body:has(.cv) { background: #ffffff; color: #1b1d22; color-scheme: light; }
+</style>
+
+<style>
+  .cv { --ink: #1b1d22; --muted: #575f6e; --accent: #0b6e52; --rule: #e3e6ec; max-width: 186mm; margin: 0 auto; padding: 24px 0; font-size: 10.5pt; line-height: 1.45; color: var(--ink); background: #fff; }
+  @media screen { .cv { padding: 32px 16px; } }
+  .cv-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  h1 { font-size: 26pt; letter-spacing: -0.03em; }
+  .role { color: var(--accent); font-weight: 600; margin-top: 2px; }
+  .pitch { margin-top: 4px; font: 600 12pt var(--font-display); letter-spacing: -0.02em; }
+  .contact { margin-top: 10px; padding-bottom: 10px; border-bottom: 2px solid var(--accent); color: var(--muted); font-size: 9.5pt; }
+  a { color: inherit; text-decoration: none; }
+  section { margin-top: 12px; break-inside: avoid; }
+  h2 { font-size: 11.5pt; letter-spacing: -0.01em; color: var(--accent); text-transform: uppercase; font-family: var(--font-body); font-weight: 600; margin-bottom: 4px; }
+  h3 { font-size: 10.5pt; }
+  h3 span { color: var(--muted); font-weight: 500; font-family: var(--font-body); }
+  p + p { margin-top: 4px; }
+  .now { color: var(--muted); }
+  .cases { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0; }
+  .cases article { border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; }
+  ul { padding-left: 14px; margin-top: 4px; }
+  li + li { margin-top: 2px; }
+  s { color: var(--muted); }
+  .lesson { margin-top: 6px; color: var(--muted); font-size: 9.5pt; }
+  .method { columns: 3; padding-left: 18px; margin-top: 4px; }
+  .method span { color: var(--muted); font-size: 9pt; }
+  .sep { white-space: pre; }
+  section.two { break-inside: auto; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .two li { font-size: 9.5pt; }
+  .stack { color: var(--muted); }
+  .cv-foot { margin-top: 14px; padding-top: 8px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 9pt; }
+</style>

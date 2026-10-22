@@ -1,0 +1,40 @@
+/* Jetons recopiés de Kauri (packages/tokens/src/tokens.ts), direction « profondeur douce ».
+   Copie volontaire : le portfolio ne dépend pas du paquet de Kauri. */
+:root {
+  --color-bg: #14161b;
+  --color-surface: #1d2029;
+  --color-raise: #262a35;
+  --color-line: #2f3542;
+  --color-field: #171a22;
+  --color-fg: #e9ecf2;
+  --color-fg-2: #a8afbe;
+  --color-fg-dim: #8c94a5; /* Kauri : #6f7787, éclairci pour atteindre AA (4,5:1) sur surface et raise. */
+  --color-accent-from: #6ee7b7;
+  --color-accent-to: #58c9e8;
+  --color-accent-ink: #0c231d;
+  --color-amber: #f5b851;
+  --color-coral: #ff9e7d;
+  --color-blue: #8ab4ff;
+  --color-violet: #ad8dfd;
+
+  --radius-sm: 11px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.045) inset, 0 14px 30px rgba(0, 0, 0, 0.28);
+  --shadow-float: 0 22px 50px rgba(0, 0, 0, 0.42);
+  --shadow-glow: 0 8px 22px rgba(110, 231, 183, 0.2);
+
+  --font-display: 'Sora', system-ui, sans-serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --tracking-display: -0.03em;
+  --tracking-display-tight: -0.04em;
+  --tracking-label: 0.1em;
+
+  --gradient-accent: linear-gradient(90deg, var(--color-accent-from), var(--color-accent-to));
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-pen: cubic-bezier(0.65, 0, 0.35, 1);
+}

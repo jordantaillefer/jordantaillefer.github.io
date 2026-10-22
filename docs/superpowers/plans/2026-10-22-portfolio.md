@@ -280,7 +280,7 @@ Contenu : titre « Augmenté, pas automatisé. » et une frise de 9 tuiles inspi
 
 Contenu :
 - Mon poste : ItermMock, légende des couleurs, Stream Deck (12 touches qui reflètent les mêmes états), skills, outils avec liens, et la nuance « je sais quand vibe coder ».
-- Projets : Kauri en carte large (pitch, stack, 927 commits / 24 specs / 36 plans / 472 fichiers de tests depuis `snapshot.kauri`, schéma d'archi monorepo en SVG, lien `kauri-fit.ai`), puis Roue des noms et Billable.
+- Projets : Kauri en carte large (pitch, stack, 927 commits / 24 specs / 36 plans / 236 fichiers de tests depuis `snapshot.kauri`, schéma d'archi monorepo en SVG, lien `kauri-fit.ai`), puis Roue des noms et Billable.
 - Contact : email, LinkedIn, GitHub, lien CV.
 - Footer : © année, lien vers les mentions légales.
 - Mentions légales (`noindex`) : éditeur EURL JORDAN TAILLEFER, SIREN 994876902, siège et dirigeant **recopiés** depuis la page annuaire-entreprises de la spec, hébergeur Cloudflare, Inc.

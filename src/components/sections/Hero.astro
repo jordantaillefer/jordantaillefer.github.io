@@ -1,0 +1,78 @@
+---
+import { site } from '../../content/site';
+import { cases } from '../../content/cases';
+import { formatDay, formatMonth, growth, snapshot } from '../../data/snapshot';
+
+const dsfr = cases.find((study) => study.id === 'dsfr')!;
+const emotion = cases.find((study) => study.id === 'emotion')!;
+const metric = (study: typeof dsfr, label: string) => study.metrics.find((m) => m.label === label)!.after;
+
+const stats = [
+  { value: `×${Math.floor(growth.ratio)}`, label: `commits par mois, de 2025 à ${formatMonth(growth.reference.month)}`, color: 'var(--color-fg)' },
+  { value: metric(dsfr, 'Lignes supprimées'), label: 'lignes supprimées en retirant la bibliothèque DSFR', color: 'var(--color-blue)' },
+  { value: metric(dsfr, 'Vues comparées au pixel'), label: 'vues comparées au pixel pour ne rien casser', color: 'var(--color-amber)' },
+  { value: metric(emotion, 'Fichiers modifiés'), label: 'fichiers migrés en une journée, zéro régression avant la MEP', color: 'var(--color-accent-from)' },
+];
+---
+
+<section id="hero" class="hero">
+  <div class="container hero-grid">
+    <div>
+      <p class="label hero-label rise" style="--d:60ms">{site.role} · {site.status} · {site.location}</p>
+      <h1 class="hero-title rise" style="--d:120ms">
+        {site.headline[0]}<br /><span class="gradient-text">{site.headline[1]}</span>
+      </h1>
+      <p class="hero-intro rise" style="--d:200ms">{site.intro} {site.credibility}</p>
+      <p class="hero-now rise" style="--d:240ms">
+        <span class="now-dot" aria-hidden="true"></span>
+        <span><strong>En ce moment</strong> · {site.now.text}</span>
+      </p>
+      <div class="hero-ctas rise" style="--d:280ms">
+        <a href="#pilote" class="button" data-variant="primary">Voir le travail</a>
+        <a href="#contact" class="button" data-variant="secondary">Me contacter</a>
+      </div>
+    </div>
+
+    <aside class="stats rise" style="--d:340ms" aria-label="Chiffres clés de Pilote">
+      <p class="label stats-label">Pilote, en chiffres</p>
+      <div class="stats-grid">
+        {
+          stats.map((stat) => (
+            <div class="stat">
+              <strong style={`color:${stat.color}`}>{stat.value}</strong>
+              <span>{stat.label}</span>
+            </div>
+          ))
+        }
+      </div>
+      <p class="stats-foot">Commits du dépôt Pilote, mesuré le {formatDay(snapshot.measuredAt)}.</p>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: 36px 56px;
+    background-image: radial-gradient(55% 60% at 15% 30%, color-mix(in oklab, var(--color-accent-from) 9%, transparent), transparent 70%);
+  }
+  .hero-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 44px; align-items: center; }
+  .hero-label { color: var(--color-accent-from); }
+  .hero-title { font-size: clamp(36px, 6vw, 56px); line-height: 1.04; letter-spacing: var(--tracking-display-tight); margin-top: 14px; }
+  .hero-intro { margin-top: 18px; font-size: 17px; line-height: 1.55; color: var(--color-fg-2); max-width: 540px; }
+  .hero-now { display: flex; gap: 10px; align-items: baseline; margin-top: 18px; font-size: 14px; color: var(--color-fg-2); }
+  .hero-now strong { color: var(--color-fg); font-weight: 600; }
+  .now-dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--color-accent-from); box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-accent-from) 20%, transparent); transform: translateY(-1px); }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+  .stats { background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius-xl); padding: 22px; box-shadow: var(--shadow-card); }
+  .stats-label { color: var(--color-fg-dim); }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .stat { background: var(--color-raise); border-radius: var(--radius-md); padding: 14px; }
+  .stat strong { display: block; font: 700 28px/1 var(--font-display); letter-spacing: var(--tracking-display-tight); }
+  .stat span { display: block; margin-top: 6px; font-size: 12.5px; line-height: 1.4; color: var(--color-fg-2); }
+  .stats-foot { margin-top: 12px; font-size: 12.5px; color: var(--color-fg-dim); }
+
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+  }
+</style>

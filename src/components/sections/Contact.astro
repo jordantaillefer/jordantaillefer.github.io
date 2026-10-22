@@ -1,0 +1,27 @@
+---
+import { site } from '../../content/site';
+---
+
+<section id="contact" class="section">
+  <div class="container">
+    <div class="contact">
+      <p class="label">Contact</p>
+      <h2>Un produit à faire avancer ?</h2>
+      <p class="section-intro">Freelance, basé à Limoges. Écris-moi pour en parler.</p>
+      <div class="actions">
+        <a class="button" data-variant="primary" href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+        <a class="button" data-variant="secondary" href={site.contact.linkedin}>LinkedIn</a>
+        <a class="button" data-variant="secondary" href={site.contact.github}>GitHub</a>
+        <a class="button" data-variant="secondary" href="/cv/jordan-taillefer-cv.pdf">CV (PDF)</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact { background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius-xl); padding: clamp(24px, 5vw, 48px); box-shadow: var(--shadow-card); background-image: radial-gradient(60% 80% at 0% 0%, color-mix(in oklab, var(--color-accent-from) 10%, transparent), transparent 70%); }
+  .contact .label { color: var(--color-accent-from); }
+  h2 { font-size: clamp(28px, 4vw, 40px); letter-spacing: var(--tracking-display-tight); margin-top: 8px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+  .actions .button { overflow-wrap: anywhere; }
+</style>

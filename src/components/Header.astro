@@ -1,0 +1,39 @@
+---
+import Monogram from './Monogram.astro';
+import { site } from '../content/site';
+
+const links = [
+  { href: '#pilote', label: 'Pilote' },
+  { href: '#methode', label: 'Méthode' },
+  { href: '#poste', label: 'Mon poste' },
+  { href: '#projets', label: 'Projets' },
+];
+---
+
+<header class="header rise" style="--d:0ms">
+  <div class="container header-inner">
+    <a href="/" class="brand" aria-label={`${site.name}, accueil`}>
+      <Monogram size={38} idPrefix="header" />
+      <span>{site.name}</span>
+    </a>
+    <nav aria-label="Sections">
+      {links.map((link) => <a href={link.href} class="nav-link">{link.label}</a>)}
+      <a href="/cv/jordan-taillefer-cv.pdf" class="nav-cv">CV (PDF)</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header { position: relative; z-index: 2; }
+  .header-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 18px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 600 15px var(--font-display); letter-spacing: -0.02em; }
+  nav { display: flex; align-items: center; gap: 24px; font-size: 14px; }
+  .nav-link { color: var(--color-fg-2); text-decoration: none; }
+  .nav-link:hover { color: var(--color-fg); }
+  .nav-cv { color: var(--color-accent-from); text-decoration: none; font-weight: 600; border: 1px solid var(--color-line); border-radius: 999px; padding: 6px 12px; }
+  .nav-cv:hover { border-color: var(--color-accent-from); }
+  @media (max-width: 760px) {
+    .nav-link { display: none; }
+    .brand span { display: none; }
+  }
+</style>

@@ -1,0 +1,60 @@
+---
+import CommitChart from '../CommitChart.astro';
+import CaseStudy from '../CaseStudy.astro';
+import { site } from '../../content/site';
+import { cases } from '../../content/cases';
+import { formatMonth, growth, snapshot } from '../../data/snapshot';
+
+const { refactor, feature } = snapshot.pilote.categories;
+---
+
+<section id="pilote" class="section">
+  <div class="container">
+    <div class="section-head rise" style="--d:420ms">
+      <p class="label">Mon travail actuel</p>
+      <h2>Pilote, pour la DITP</h2>
+      <p class="section-intro">{site.pilote.context} {site.pilote.role}</p>
+    </div>
+
+    <div class="growth">
+      <div class="growth-chart">
+        <h3>Mes commits par mois sur Pilote</h3>
+        <p class="growth-sub">
+          De {Math.round(growth.baselineAvg)} par mois en moyenne en 2025 à {growth.reference.commits} en {formatMonth(growth.reference.month)} : ×{Math.floor(growth.ratio)}.
+        </p>
+        <CommitChart series={snapshot.pilote.series} measuredAt={snapshot.measuredAt} baselineAvg={growth.baselineAvg} />
+      </div>
+      <aside class="growth-why">
+        <h3>Ce que la courbe ne dit pas seule</h3>
+        <p>Un nombre de commits ne mesure pas la qualité. Ce qui rend celui-ci crédible :</p>
+        <ul>
+          {site.pilote.credibleBecause.map((reason) => <li>{reason}</li>)}
+        </ul>
+        <p class="ratio"><strong>{refactor}</strong> refactors pour <strong>{feature}</strong> features.</p>
+      </aside>
+    </div>
+
+    <div class="cases">
+      {cases.map((study) => <CaseStudy study={study} />)}
+    </div>
+
+    <p class="ai-product">{site.pilote.aiInProduct}</p>
+  </div>
+</section>
+
+<style>
+  .growth { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; margin-top: 28px; }
+  .growth-chart, .growth-why { background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius-xl); padding: 24px; box-shadow: var(--shadow-card); min-width: 0; }
+  h3 { font-size: 19px; letter-spacing: var(--tracking-display); }
+  .growth-sub { margin: 6px 0 18px; color: var(--color-fg-2); font-size: 14px; }
+  .growth-why p { color: var(--color-fg-2); font-size: 14px; margin-top: 8px; }
+  .growth-why ul { margin-top: 12px; padding-left: 18px; display: grid; gap: 8px; font-size: 14px; }
+  .growth-why li::marker { color: var(--color-accent-from); }
+  .ratio { border-top: 1px dashed var(--color-line); padding-top: 12px; margin-top: 16px !important; }
+  .ratio strong { color: var(--color-fg); font-family: var(--font-display); }
+  .cases { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .ai-product { margin-top: 16px; padding: 16px 20px; border-radius: var(--radius-lg); background: color-mix(in oklab, var(--color-violet) 9%, var(--color-surface)); border: 1px solid var(--color-line); color: var(--color-fg-2); font-size: 14px; }
+  @media (max-width: 900px) {
+    .growth, .cases { grid-template-columns: 1fr; }
+  }
+</style>

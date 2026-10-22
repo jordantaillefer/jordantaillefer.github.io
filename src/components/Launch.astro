@@ -1,0 +1,51 @@
+---
+import Monogram from './Monogram.astro';
+import launchScript from '../scripts/launch.js?raw';
+---
+
+<template id="launch-template">
+  <div id="launch" role="presentation">
+    <Monogram size={200} animated idPrefix="launch" label="JT" />
+    <p class="launch-name" aria-hidden="true">Jordan Taillefer</p>
+  </div>
+</template>
+<script is:inline set:html={launchScript} />
+
+<style is:global>
+  html[data-launch='playing'] { --base: 2250ms; }
+  html[data-launch='skipped'] { --base: 0ms; }
+
+  #launch {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    background: var(--color-bg);
+    transition: opacity 260ms ease-out;
+    /* Filet de sécurité si le minuteur ne part jamais. */
+    animation: launch-hide 1ms linear 3200ms forwards;
+    cursor: pointer;
+  }
+  #launch.is-leaving { opacity: 0; pointer-events: none; }
+  @keyframes launch-hide { to { visibility: hidden; opacity: 0; } }
+
+  .launch-name {
+    position: relative;
+    font: 600 12px var(--font-display);
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: #26282f;
+  }
+  .launch-name::after {
+    content: 'Jordan Taillefer';
+    position: absolute;
+    inset: 0;
+    color: var(--color-fg-2);
+    opacity: 0;
+    animation: fade 500ms ease-out 1350ms forwards;
+  }
+</style>

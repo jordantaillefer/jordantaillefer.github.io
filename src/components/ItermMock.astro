@@ -1,0 +1,95 @@
+---
+import type { TabState } from '../content/workstation';
+
+interface Props {
+  left: TabState[];
+  right: TabState[];
+}
+
+const { left, right } = Astro.props;
+
+// Une session qui travaille finit par attendre puis par terminer : les onglets qui
+// tournent bouclent sur ce cycle, décalés pour ne jamais changer ensemble.
+const panes = [
+  {
+    side: 'left',
+    tabs: left,
+    branch: 'feat/ppg-rapport-detaille-pdf-serveur',
+    workspace: 'worktree-2',
+    lines: [
+      { tone: 'dim', text: '$ git commit -m "refactor: le PDF du rapport détaillé est généré dans un worker_thread"' },
+      { tone: 'ok', text: '✓ Task 3: complete · pnpm test:unit' },
+      { tone: '', text: 'Tâches 4 et 5, côté client : la session expirée et les ancres.' },
+      { tone: 'accent', text: '● Honking… (7m 29s)' },
+    ],
+  },
+  {
+    side: 'right',
+    tabs: right,
+    branch: 'feat/portfolio',
+    workspace: 'portfolio-2026',
+    lines: [
+      { tone: 'dim', text: '$ pnpm test:e2e pilote' },
+      { tone: 'ok', text: '✓ 8 passed' },
+      { tone: '', text: 'Le rendu est bon. Je commite la tâche 7.' },
+      { tone: 'accent', text: '● Brewing… (2m 33s)' },
+    ],
+  },
+] as const;
+---
+
+<div class="iterm" role="img" aria-label="Mon terminal : à gauche trois sessions Claude sur Pilote, une par worktree ; à droite mes projets perso. La couleur de chaque onglet suit l'état de la session.">
+  {
+    panes.map((pane) => (
+      <div class="pane" data-pane={pane.side}>
+        <div class="tabs">
+          {pane.tabs.map((tab, i) => (
+            <div class="tab" data-tab data-state={tab.state}>
+              <span class="tab-dot" data-anim={tab.state === 'working' ? '' : undefined} style={`--i:${i}`}></span>
+              <span class="tab-label">{tab.label}</span>
+            </div>
+          ))}
+        </div>
+        <div class="subtabs" aria-hidden="true">
+          <span class="on">Chat ⌥⌘1</span><span>Diff ⌥⌘2</span><span>Code Review ⌥⌘3</span>
+        </div>
+        <div class="body" aria-hidden="true">
+          {pane.lines.map((line) => <p class={line.tone}>{line.text}</p>)}
+        </div>
+        <div class="status" aria-hidden="true">
+          <span>{pane.workspace}</span><span class="branch">{pane.branch}</span><span class="dev">● Dev off</span><span>Opus</span>
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .iterm { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--color-line); border: 1px solid var(--color-line); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-float); font: 12px/1.6 var(--font-mono); }
+  .pane { background: #101217; display: flex; flex-direction: column; min-width: 0; }
+  .tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 8px; }
+  .tab { --tab: var(--color-fg-dim); display: flex; align-items: center; gap: 6px; min-width: 0; padding: 5px 8px; border-radius: 999px; border: 1.5px solid var(--tab); background: color-mix(in oklab, var(--tab) 12%, transparent); color: var(--color-fg-2); font: 600 11px var(--font-body); }
+  .tab[data-state='done'] { --tab: var(--color-accent-from); }
+  .tab[data-state='working'] { --tab: #4f8dff; }
+  .tab[data-state='waiting'] { --tab: var(--color-amber); }
+  .tab[data-state='error'] { --tab: var(--color-coral); }
+  .tab-dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--tab); }
+  .tab-dot[data-anim] { animation: tab-cycle 9s steps(1) calc(var(--i) * -3s) infinite; }
+  .tab-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  @keyframes tab-cycle {
+    0% { background: #4f8dff; box-shadow: 0 0 0 3px color-mix(in oklab, #4f8dff 30%, transparent); }
+    55% { background: var(--color-amber); box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-amber) 30%, transparent); }
+    75% { background: var(--color-accent-from); box-shadow: none; }
+  }
+  .subtabs { display: flex; gap: 12px; padding: 4px 12px 8px; color: var(--color-fg-dim); font-size: 11px; border-bottom: 1px solid var(--color-line); overflow: hidden; white-space: nowrap; }
+  .subtabs .on { color: var(--color-fg); }
+  .body { padding: 12px; display: grid; gap: 6px; flex: 1; color: var(--color-fg-2); }
+  .body p { overflow-wrap: anywhere; }
+  .body .dim { color: var(--color-fg-dim); }
+  .body .ok { color: var(--color-accent-from); }
+  .body .accent { color: var(--color-coral); }
+  .status { display: flex; gap: 10px; padding: 6px 12px; border-top: 1px solid var(--color-line); color: var(--color-fg-dim); font-size: 11px; white-space: nowrap; overflow: hidden; }
+  .status .branch { color: var(--color-blue); overflow: hidden; text-overflow: ellipsis; }
+  .status .dev { color: var(--color-coral); }
+  @media (max-width: 760px) { .iterm { grid-template-columns: 1fr; } }
+</style>

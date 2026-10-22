@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import Launch from '../components/Launch.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Hero from '../components/sections/Hero.astro';
+import Pilote from '../components/sections/Pilote.astro';
+import Method from '../components/sections/Method.astro';
+import Workstation from '../components/sections/Workstation.astro';
+import Projects from '../components/sections/Projects.astro';
+import Contact from '../components/sections/Contact.astro';
+---
+
+<Base
+  title="Jordan Taillefer · Product developer augmenté par l'IA"
+  description="Product developer fullstack TypeScript. Je pense le produit, l'IA accélère le reste : méthode, chantiers chiffrés et outillage Claude Code."
+>
+  <Launch />
+  <Header />
+  <main>
+    <Hero />
+    <Pilote />
+    <Method />
+    <Workstation />
+    <Projects />
+    <Contact />
+  </main>
+  <Footer />
+</Base>
