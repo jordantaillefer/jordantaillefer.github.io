@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import Monogram from '../components/Monogram.astro';
+import { site } from '../content/site';
+---
+
+<Base title="Jordan Taillefer" description="Image de partage." noindex>
+  <div class="og">
+    <Monogram size={260} idPrefix="og" />
+    <div>
+      <p class="label">{site.role} · {site.status}</p>
+      <p class="name">{site.name}</p>
+      <p class="headline">{site.headline[0]}<br /><span class="gradient-text">{site.headline[1]}</span></p>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .og {
+    width: 1200px;
+    height: 630px;
+    display: flex;
+    align-items: center;
+    gap: 64px;
+    padding: 0 88px;
+    background: var(--color-bg);
+    background-image: radial-gradient(55% 70% at 20% 40%, color-mix(in oklab, var(--color-accent-from) 12%, transparent), transparent 70%);
+  }
+  .label { color: var(--color-accent-from); font-size: 16px; }
+  .name { margin-top: 12px; font: 600 26px var(--font-display); color: var(--color-fg-2); letter-spacing: -0.02em; }
+  .headline { margin-top: 18px; font: 700 64px/1.04 var(--font-display); letter-spacing: var(--tracking-display-tight); }
+</style>

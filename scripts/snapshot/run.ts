@@ -1,3 +1,4 @@
+import { execSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
@@ -47,4 +48,9 @@ export function writeSnapshot(now = new Date()): Snapshot {
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
   const snapshot = writeSnapshot();
   console.log(`snapshot.json écrit (${snapshot.measuredAt}) : ${snapshot.pilote.totalCommits} commits Pilote, ${snapshot.kauri.commits} commits Kauri`);
+  execSync('pnpm build', { cwd: join(import.meta.dirname, '../..'), stdio: 'inherit' });
+  // Importé après l'écriture du snapshot, pour que l'empreinte du CV le prenne en compte.
+  const { printAssets } = await import('./print');
+  await printAssets();
+  console.log('CV PDF, empreinte et image OG régénérés.');
 }
