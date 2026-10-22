@@ -27,3 +27,24 @@ test('meta OG', async ({ page }) => {
   expect(await page.locator('meta[property="og:title"]').getAttribute('content')).toBeTruthy();
   expect(await page.locator('meta[property="og:description"]').getAttribute('content')).toBeTruthy();
 });
+
+test('deux feuilles, et rien ne déborde', async ({ page }) => {
+  await page.goto('/cv');
+  const sheets = page.locator('.sheet');
+  await expect(sheets).toHaveCount(2);
+  const overflows = await sheets.evaluateAll((all) =>
+    all.flatMap((sheet, i) =>
+      [...sheet.querySelectorAll('.sheet-main, .sheet-side')]
+        .filter((col) => col.scrollHeight > col.clientHeight + 1)
+        .map((col) => `feuille ${i + 1} : ${col.className}`),
+    ),
+  );
+  expect(overflows).toEqual([]);
+});
+
+test('le parcours complet est présent', async ({ page }) => {
+  await page.goto('/cv');
+  for (const name of ['Pilote', 'OCTO Technology', 'DGFiP', 'Invivo', 'Excilys']) {
+    await expect(page.locator('body')).toContainText(name);
+  }
+});
