@@ -42,3 +42,19 @@ h1, h2, h3 { font-family: var(--font-display); letter-spacing: var(--tracking-di
 @media (prefers-reduced-motion: reduce) {
   .rise, [data-anim] { animation: none !important; }
 }
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  padding: 13px 20px;
+  font: 600 14px var(--font-display);
+  text-decoration: none;
+  transition: transform 150ms var(--ease-out), border-color 150ms;
+}
+.button:hover { transform: translateY(-1px); }
+/* Un seul bouton par écran porte le dégradé. */
+.button[data-variant='primary'] { background: var(--gradient-accent); color: var(--color-accent-ink); box-shadow: var(--shadow-glow); }
+.button[data-variant='secondary'] { background: var(--color-raise); color: var(--color-fg); border: 1px solid var(--color-line); }
+.button[data-variant='secondary']:hover { border-color: var(--color-fg-dim); }

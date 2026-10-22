@@ -1,11 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
 import Launch from '../components/Launch.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/sections/Hero.astro';
 ---
 
-<Base title="Jordan Taillefer · Product developer" description="Product developer fullstack TypeScript, augmenté par l'IA.">
+<Base
+  title="Jordan Taillefer · Product developer augmenté par l'IA"
+  description="Product developer fullstack TypeScript. Je pense le produit, l'IA accélère le reste : méthode, chantiers chiffrés et outillage Claude Code."
+>
   <Launch />
-  <main class="container">
-    <h1 class="rise">Jordan Taillefer</h1>
+  <Header />
+  <main>
+    <Hero />
   </main>
 </Base>
