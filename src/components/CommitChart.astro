@@ -1,6 +1,7 @@
 ---
 import type { MonthPoint } from '../lib/stats';
-import { formatDay, formatMonth } from '../data/snapshot';
+import ChartSvg from './ChartSvg.astro';
+import { formatDay } from '../data/snapshot';
 
 interface Props {
   series: MonthPoint[];
@@ -9,78 +10,20 @@ interface Props {
 }
 
 const { series, measuredAt, baselineAvg } = Astro.props;
-
-const STEP = 30;
-const BAR = 18;
-const TOP = 28;
-const CHART_H = 180;
-const width = series.length * STEP;
-const max = Math.max(...series.map((point) => point.commits));
-const y = (value: number) => TOP + CHART_H - (value / max) * CHART_H;
-const peak = series.filter((point) => !point.partial).reduce((best, point) => (point.commits > best.commits ? point : best));
-const quarterLabel = (month: string) => {
-  const [year, m] = month.split('-');
-  return ['01', '04', '07', '10'].includes(m) ? `${formatMonth(month).split(' ')[0]} ${year.slice(2)}` : '';
-};
-const label = `Commits de Jordan sur Pilote par mois, de ${formatMonth(series[0].month)} à ${formatMonth(series.at(-1)!.month)} : moyenne 2025 d'environ ${Math.round(baselineAvg)} par mois, pic à ${peak.commits} en ${formatMonth(peak.month)}. Le dernier mois est en cours.`;
+// Sur mobile, toute la série rendrait le texte illisible et un défilement cacherait
+// justement les mois récents : on n'y montre que les 12 derniers, en grand.
+const MOBILE_MONTHS = 12;
 ---
 
 <figure class="chart">
-  <div class="chart-scroll" tabindex="0" aria-label="Graphique défilant horizontalement">
-  <svg data-chart viewBox={`0 0 ${width} ${TOP + CHART_H + 28}`} role="img" aria-label={label}>
-    <defs>
-      <linearGradient id="bar-fill" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#6EE7B7"></stop>
-        <stop offset="1" stop-color="#6EE7B7" stop-opacity="0.25"></stop>
-      </linearGradient>
-      <pattern id="bar-partial" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-        <rect width="6" height="6" fill="#6EE7B7" fill-opacity="0.12"></rect>
-        <line x1="0" y1="0" x2="0" y2="6" stroke="#6EE7B7" stroke-opacity="0.6" stroke-width="2"></line>
-      </pattern>
-    </defs>
-    <line class="baseline" x1="0" x2={width} y1={y(baselineAvg)} y2={y(baselineAvg)}></line>
-    <text class="baseline-label" x="4" y={y(baselineAvg) - 6}>moy. 2025 ≈ {Math.round(baselineAvg)}</text>
-    {
-      series.map((point, i) => (
-        <g>
-          <rect
-            class="bar"
-            data-month={point.month}
-            data-partial={point.partial ? '' : undefined}
-            x={i * STEP + (STEP - BAR) / 2}
-            y={y(point.commits)}
-            width={BAR}
-            height={Math.max(1, TOP + CHART_H - y(point.commits))}
-            rx="4"
-            fill={point.partial ? 'url(#bar-partial)' : 'url(#bar-fill)'}
-            style={`--i:${i}`}
-          >
-            <title>{`${formatMonth(point.month)} : ${point.commits} commits${point.partial ? ' (mois en cours)' : ''}`}</title>
-          </rect>
-          {quarterLabel(point.month) && (
-            <text class="axis" x={i * STEP + STEP / 2} y={TOP + CHART_H + 20} text-anchor="middle">
-              {quarterLabel(point.month)}
-            </text>
-          )}
-          {point === peak && (
-            <text class="peak" x={i * STEP + STEP / 2} y={y(point.commits) - 8} text-anchor="middle">
-              {point.commits}
-            </text>
-          )}
-        </g>
-      ))
-    }
-  </svg>
-  </div>
-  <figcaption>Barre hachurée : mois en cours. Mesuré le {formatDay(measuredAt)}.</figcaption>
+  <div class="full"><ChartSvg series={series} baselineAvg={baselineAvg} /></div>
+  <div class="recent"><ChartSvg series={series.slice(-MOBILE_MONTHS)} baselineAvg={baselineAvg} compact /></div>
+  <figcaption>
+    <span class="recent-note">Les 12 derniers mois. </span>Barre hachurée : mois en cours. Mesuré le {formatDay(measuredAt)}.
+  </figcaption>
 </figure>
 
 <script>
-  // Sur un écran étroit le graphique défile : on l'ouvre sur les mois récents.
-  document.querySelectorAll<HTMLElement>('.chart-scroll').forEach((scroller) => {
-    scroller.scrollLeft = scroller.scrollWidth;
-  });
-
   // Les barres poussent quand le graphique entre à l'écran. Sans JS ou sous
   // « réduire les animations », elles sont simplement pleines.
   const charts = document.querySelectorAll<HTMLElement>('.chart');
@@ -104,17 +47,11 @@ const label = `Commits de Jordan sur Pilote par mois, de ${formatMonth(series[0]
 
 <style>
   .chart { margin: 0; }
-  .chart-scroll { overflow-x: auto; overscroll-behavior-x: contain; }
-  svg { width: 100%; height: auto; overflow: visible; display: block; }
-  /* En dessous, le texte du SVG tomberait sous 10 px : le graphique garde sa taille et défile. */
+  .recent, .recent-note { display: none; }
   @media (max-width: 700px) {
-    svg { min-width: 600px; }
+    .full { display: none; }
+    .recent { display: block; }
+    .recent-note { display: inline; }
   }
-  .bar { transform-box: fill-box; transform-origin: bottom; }
-  :global(.chart.armed) .bar { transform: scaleY(0); }
-  :global(.chart.in-view) .bar { animation: grow 420ms var(--ease-out) calc(var(--i) * 28ms) both; }
-  .baseline { stroke: var(--color-fg-dim); stroke-dasharray: 4 5; stroke-width: 1; }
-  .baseline-label, .axis { fill: var(--color-fg-dim); font: 500 11px var(--font-body); }
-  .peak { fill: var(--color-fg); font: 700 13px var(--font-display); }
   figcaption { margin-top: 10px; font-size: 12.5px; color: var(--color-fg-dim); }
 </style>
