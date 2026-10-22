@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { cv } from '../content/cv';
+import { site } from '../content/site';
+---
+
+<Base title="Mentions légales · Jordan Taillefer" description="Mentions légales du site jordantaillefer.com." noindex>
+  <Header />
+  <main class="container legal">
+    <h1>Mentions légales</h1>
+    <h2>Éditeur</h2>
+    <p>
+      {cv.company.name}, société à responsabilité limitée unipersonnelle (EURL).<br />
+      SIREN {cv.company.siren}.<br />
+      Siège : 18 rue les Provinciales, 87280 Limoges.<br />
+      Directeur de la publication : Jordan Taillefer, gérant.<br />
+      Contact : <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+    </p>
+    <h2>Hébergeur</h2>
+    <p>Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, États-Unis · cloudflare.com</p>
+    <h2>Données personnelles</h2>
+    <p>Ce site ne dépose aucun cookie et ne collecte aucune donnée personnelle.</p>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .legal { padding-block: 40px 56px; max-width: 720px; }
+  h1 { font-size: 36px; letter-spacing: var(--tracking-display-tight); }
+  h2 { font-size: 18px; margin-top: 28px; }
+  p { margin-top: 8px; color: var(--color-fg-2); }
+  a { color: var(--color-accent-from); }
+</style>

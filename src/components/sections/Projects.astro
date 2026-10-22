@@ -1,0 +1,84 @@
+---
+import { projects } from '../../content/projects';
+import { snapshot } from '../../data/snapshot';
+
+const kauriNumbers = [
+  { value: snapshot.kauri.commits, label: 'commits' },
+  { value: snapshot.kauri.specs, label: 'specs de design' },
+  { value: snapshot.kauri.plans, label: "plans d'implémentation" },
+  { value: snapshot.kauri.testFiles, label: 'fichiers de tests' },
+];
+---
+
+<section id="projets" class="section">
+  <div class="container">
+    <div class="section-head">
+      <p class="label">Projets perso</p>
+      <h2>Là où j'essaie tout avant de le faire en prod.</h2>
+    </div>
+
+    <div class="projects">
+      {
+        projects.map((project) => (
+          <article class="project" data-project={project.id} data-featured={project.featured ? '' : undefined}>
+            <div class="project-main">
+              <h3>{project.name}</h3>
+              <p class="pitch">{project.pitch}</p>
+              <ul class="facts">{project.facts.map((fact) => <li>{fact}</li>)}</ul>
+              <ul class="stack" aria-label="Stack">{project.stack.map((tech) => <li>{tech}</li>)}</ul>
+              {(project.url || project.repo) && (
+                <p class="links">
+                  {project.url && <a href={project.url}>{project.url.replace('https://', '')} ↗</a>}
+                  {project.repo && <a href={project.repo}>code ↗</a>}
+                </p>
+              )}
+            </div>
+            {project.featured && (
+              <div class="project-side">
+                <svg class="archi" viewBox="0 0 300 170" role="img" aria-label="Architecture de Kauri : une API, un site web et une app mobile qui partagent schémas et jetons de design.">
+                  <g class="box"><rect x="10" y="10" width="84" height="40" rx="10" /><text x="52" y="35">API</text></g>
+                  <g class="box"><rect x="108" y="10" width="84" height="40" rx="10" /><text x="150" y="35">Web</text></g>
+                  <g class="box"><rect x="206" y="10" width="84" height="40" rx="10" /><text x="248" y="35">Mobile</text></g>
+                  <path class="link" d="M52 50 V86 M150 50 V86 M248 50 V86 M52 86 H248" />
+                  <g class="box shared"><rect x="40" y="104" width="104" height="40" rx="10" /><text x="92" y="129">schémas Zod</text></g>
+                  <g class="box shared"><rect x="156" y="104" width="104" height="40" rx="10" /><text x="208" y="129">jetons design</text></g>
+                  <path class="link" d="M92 86 V104 M208 86 V104" />
+                </svg>
+                <dl class="numbers">
+                  {kauriNumbers.map((n) => <div><dt>{n.label}</dt><dd>{n.value}</dd></div>)}
+                </dl>
+              </div>
+            )}
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; }
+  .project { background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius-xl); padding: 24px; box-shadow: var(--shadow-card); display: grid; gap: 24px; min-width: 0; }
+  .project[data-featured] { grid-column: 1 / -1; grid-template-columns: 1.2fr 1fr; background-image: radial-gradient(80% 90% at 100% 0%, color-mix(in oklab, var(--color-accent-to) 12%, transparent), transparent 60%); }
+  h3 { font-size: 24px; letter-spacing: var(--tracking-display-tight); }
+  .pitch { margin-top: 8px; color: var(--color-fg-2); font-size: 15px; }
+  .facts { margin-top: 12px; padding-left: 18px; display: grid; gap: 6px; font-size: 14px; }
+  .facts li::marker { color: var(--color-accent-from); }
+  .stack { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .stack li { font-size: 11.5px; font-weight: 600; color: var(--color-fg-2); background: var(--color-raise); border-radius: 999px; padding: 4px 10px; }
+  .links { display: flex; gap: 16px; margin-top: 16px; font-size: 14px; font-weight: 600; }
+  .links a { color: var(--color-accent-from); text-decoration: none; }
+  .links a:hover { text-decoration: underline; }
+  .archi { width: 100%; max-width: 360px; height: auto; margin-inline: auto; }
+  .archi .box rect { fill: var(--color-raise); stroke: var(--color-line); }
+  .archi .shared rect { fill: color-mix(in oklab, var(--color-accent-from) 12%, var(--color-raise)); stroke: color-mix(in oklab, var(--color-accent-from) 40%, transparent); }
+  .archi text { fill: var(--color-fg); font: 600 12px var(--font-display); text-anchor: middle; }
+  .archi .link { fill: none; stroke: var(--color-fg-dim); stroke-width: 1.2; stroke-dasharray: 3 4; }
+  .numbers { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .numbers div { background: var(--color-raise); border-radius: var(--radius-md); padding: 10px 12px; display: flex; flex-direction: column-reverse; }
+  .numbers dd { font: 700 22px/1 var(--font-display); letter-spacing: var(--tracking-display-tight); }
+  .numbers dt { margin-top: 4px; font-size: 12px; color: var(--color-fg-2); }
+  @media (max-width: 900px) {
+    .projects, .project[data-featured] { grid-template-columns: 1fr; }
+  }
+</style>
