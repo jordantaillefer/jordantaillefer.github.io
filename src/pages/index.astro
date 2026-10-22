@@ -1,7 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
+import Monogram from '../components/Monogram.astro';
 ---
 
 <Base title="Jordan Taillefer · Product developer" description="Product developer fullstack TypeScript, augmenté par l'IA.">
-  <main class="container"><h1>Jordan Taillefer</h1></main>
+  <main class="container">
+    <Monogram size={200} animated idPrefix="preview" label="JT" />
+    <h1>Jordan Taillefer</h1>
+  </main>
 </Base>
