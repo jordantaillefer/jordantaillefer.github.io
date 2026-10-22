@@ -8,14 +8,14 @@ test.describe('écran de lancement', () => {
     await expect(page.locator('h1')).toBeVisible();
   });
 
-  test('ne rejoue pas dans la même session', async ({ page }) => {
+  test("rejoue à chaque chargement de l'accueil, comme Kauri", async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('#launch')).toHaveCount(0, { timeout: 3000 });
     await page.reload();
-    await expect(page.locator('#launch')).toHaveCount(0);
+    await expect(page.locator('#launch')).toBeVisible();
     await page.goto('/cv');
     await page.goto('/');
-    await expect(page.locator('#launch')).toHaveCount(0);
+    await expect(page.locator('#launch')).toBeVisible();
   });
 
   test('se passe au clavier', async ({ page }) => {
@@ -41,7 +41,7 @@ test.describe('écran de lancement', () => {
     });
   });
 
-  test('un sessionStorage qui lève ne bloque pas la page', async ({ page }) => {
+  test('un stockage bloqué ne change rien', async ({ page }) => {
     await page.addInitScript(() => {
       Object.defineProperty(window, 'sessionStorage', {
         get() {

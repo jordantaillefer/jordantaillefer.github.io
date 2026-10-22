@@ -1,19 +1,11 @@
-// Écran de lancement : inséré par ce script seul, jamais par le HTML, pour qu'une
-// page sans JS (ou dont le stockage est bloqué) ne reste jamais masquée.
+// Écran de lancement, à chaque chargement de l'accueil comme dans Kauri. Inséré par ce
+// script seul, jamais par le HTML, pour qu'une page sans JS ne reste jamais masquée.
 (function () {
-  var KEY = 'jt-launch-played';
   var LEAVE_AT_MS = 2000;
   var FADE_MS = 260;
   var root = document.documentElement;
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  try {
-    if (window.sessionStorage.getItem(KEY) === '1') return;
-    window.sessionStorage.setItem(KEY, '1');
-  } catch (error) {
-    // Sans stockage, on ne saurait pas éviter de rejouer à chaque page : on s'abstient.
-    return;
-  }
 
   var template = document.getElementById('launch-template');
   if (!template) return;
