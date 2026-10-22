@@ -130,7 +130,7 @@ Jordan a beaucoup aimé cette idée et l'a validée. Le logo est un monogramme J
    - **La nuance est assumée** : ces outils perso sont en partie du vibe coding, et Jordan le dit lui-même. Le message est « je sais quand vibe coder (un outil perso) et quand pas (la prod pour l'État) ». *Validé par Jordan.*
 
 5. **Projets perso**
-   - **Kauri** en tête : une plateforme d'entraînement multisport (muscu, course, vélo, natation) sur web et mobile, alimentée par Strava et Garmin. Monorepo Turborepo, API Hono + Prisma en CQRS, web Vite/React, mobile Expo, schémas Zod et design tokens partagés. 927 commits, 24 specs, 36 plans, 472 fichiers de tests.
+   - **Kauri** en tête : une plateforme d'entraînement multisport (muscu, course, vélo, natation) sur web et mobile, alimentée par Strava et Garmin. Monorepo Turborepo, API Hono + Prisma en CQRS, web Vite/React, mobile Expo, schémas Zod et design tokens partagés. 927 commits, 24 specs, 36 plans, 236 fichiers de tests.
    - Puis Roue des noms (Next.js 15, style DSFR sans bibliothèque) et Billable (SaaS de temps et de facturation pour freelances). Voir « Sélection des projets ».
    - Les dossiers de test (`initial-template`, `poc-gif-playwright`, `template-remix-v2`, etc.) sont exclus.
 
