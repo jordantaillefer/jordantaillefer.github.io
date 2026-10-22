@@ -1,0 +1,233 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Sora:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  .k { --bg:#14161B; --surface:#1D2029; --raise:#262A35; --line:#2F3542; --field:#171A22; --fg:#E9ECF2; --fg2:#A8AFBE; --dim:#6F7787;
+       --from:#6EE7B7; --to:#58C9E8; --ink:#0C231D; --run:#F5B851; --bike:#FF9E7D; --swim:#8AB4FF; --violet:#AD8DFD;
+       --card:0 1px 0 rgba(255,255,255,.045) inset, 0 14px 30px rgba(0,0,0,.28);
+       --base:2250ms;
+       background:var(--bg); color:var(--fg); font-family:Manrope,system-ui,sans-serif; border-radius:14px; overflow:hidden; text-align:left; position:relative; }
+  .k * { box-sizing:border-box; margin:0; }
+  .k-replay { position:absolute; top:14px; right:14px; z-index:5; background:var(--raise); color:var(--fg2); border:1px solid var(--line); border-radius:999px; padding:6px 12px; font:600 12px Manrope,sans-serif; cursor:pointer; }
+
+  /* ---------- Lancement : le monogramme s'écrit à la plume ---------- */
+  .k-launch { position:absolute; inset:0; z-index:4; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; background:var(--bg); animation:k-leave 260ms ease-out 2000ms forwards; }
+  .k-launch .w { font:600 12px Sora,sans-serif; letter-spacing:.34em; text-transform:uppercase; color:#26282f; position:relative; }
+  .k-launch .w::after { content:"Jordan Taillefer"; position:absolute; inset:0; color:var(--fg2); opacity:0; animation:k-fade 500ms ease-out 1350ms forwards; }
+  .pen-mask { animation:k-write var(--dur) cubic-bezier(.65,0,.35,1) var(--delay) both; }
+  @keyframes k-write { from { stroke-dashoffset:1; } to { stroke-dashoffset:0; } }
+  @keyframes k-leave { to { opacity:0; visibility:hidden; } }
+  @keyframes k-fade { to { opacity:1; } }
+  @keyframes k-rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+  @keyframes k-grow { from { transform:scaleX(0); } to { transform:scaleX(1); } }
+  @keyframes k-blink { 50% { opacity:0; } }
+  .r { animation:k-rise 520ms cubic-bezier(.33,1,.68,1) calc(var(--base) + var(--d,0ms)) both; }
+
+  .k-nav { display:flex; justify-content:space-between; align-items:center; padding:18px 44px; }
+  .k-brand { display:flex; align-items:center; gap:10px; font:600 15px Sora,sans-serif; letter-spacing:-.02em; }
+  .k-links { display:flex; gap:26px; font-size:14px; color:var(--fg2); }
+
+  .k-label { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--from); }
+  .k-hero { display:grid; grid-template-columns:1.25fr 1fr; gap:44px; padding:36px 44px 40px; align-items:center;
+            background-image:radial-gradient(55% 60% at 15% 30%, color-mix(in oklab, var(--from) 9%, transparent), transparent 70%); }
+  .k-h1 { font:700 50px/1.04 Sora,sans-serif; letter-spacing:-.04em; margin-top:14px; }
+  .k-h1 span { background:linear-gradient(90deg,var(--from),var(--to)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .k-p { margin-top:16px; font-size:17px; line-height:1.55; color:var(--fg2); max-width:520px; }
+  .k-ctas { display:flex; gap:12px; margin-top:26px; }
+  .k-btn { border-radius:14px; padding:13px 20px; font:600 14px Sora,sans-serif; }
+  .k-btn.p { background:linear-gradient(90deg,var(--from),var(--to)); color:var(--ink); box-shadow:0 8px 22px rgba(110,231,183,.2); }
+  .k-btn.s { background:var(--raise); color:var(--fg); border:1px solid var(--line); }
+
+  .k-stats { background:var(--surface); border:1px solid var(--line); border-radius:22px; padding:22px; box-shadow:var(--card); }
+  .k-stats .grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+  .k-stat { background:var(--raise); border-radius:14px; padding:14px; }
+  .k-stat b { display:block; font:700 30px/1 Sora,sans-serif; letter-spacing:-.04em; }
+  .k-stat span { font-size:12.5px; color:var(--fg2); }
+  .k-stats .foot { margin-top:12px; font-size:12.5px; color:var(--dim); }
+
+  /* ---------- Section workflow ---------- */
+  .k-sec { padding:10px 44px 40px; }
+  .k-sec-h { display:flex; justify-content:space-between; align-items:end; gap:20px; }
+  .k-h2 { font:700 30px/1.15 Sora,sans-serif; letter-spacing:-.035em; margin-top:8px; }
+  .k-h2-p { font-size:15px; color:var(--fg2); max-width:420px; line-height:1.5; }
+  .k-flow { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:22px; position:relative; }
+  .k-step { background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:18px; box-shadow:var(--card); display:flex; flex-direction:column; gap:10px; position:relative; overflow:hidden; }
+  .k-step::before { content:""; position:absolute; inset:0 0 auto 0; height:3px; background:var(--c); transform-origin:left; animation:k-grow 500ms cubic-bezier(.33,1,.68,1) calc(var(--base) + var(--d) + 200ms) both; }
+  .k-step .top { display:flex; justify-content:space-between; align-items:center; }
+  .k-step .num { font:700 13px Sora,sans-serif; color:var(--c); }
+  .k-step .tool { font-size:11px; font-weight:600; color:var(--fg2); background:var(--raise); border-radius:999px; padding:3px 9px; }
+  .k-step .t { font:700 19px/1.2 Sora,sans-serif; letter-spacing:-.03em; }
+  .k-step .d { font-size:13.5px; color:var(--fg2); line-height:1.5; }
+  .k-step .d b { color:var(--fg); font-weight:600; }
+  .k-vis { background:var(--field); border:1px solid var(--line); border-radius:11px; padding:10px 12px; font:12px/1.65 "JetBrains Mono",ui-monospace,monospace; color:var(--fg2); margin-top:auto; }
+  .k-vis .m { color:var(--dim); } .k-vis .g { color:var(--from); } .k-vis .rd { color:var(--bike); } .k-vis .y { color:var(--run); } .k-vis .b { color:var(--swim); }
+  .k-vis .cur { display:inline-block; width:7px; height:13px; background:var(--from); vertical-align:-2px; animation:k-blink 1s steps(1) infinite; }
+  .k-proof { display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--fg2); border-top:1px dashed var(--line); padding-top:10px; }
+  .k-proof b { font:700 15px Sora,sans-serif; color:var(--fg); }
+  .k-arrow { position:absolute; top:50%; width:14px; text-align:center; color:var(--dim); font-size:14px; transform:translate(-50%,-50%); z-index:2; }
+
+  .k-quote { margin-top:16px; background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:16px 20px; display:flex; gap:16px; align-items:center; font-size:14px; color:var(--fg2); }
+  .k-quote b { color:var(--fg); }
+  .k-quote .ic { flex:none; width:36px; height:36px; border-radius:11px; display:grid; place-items:center; background:color-mix(in oklab,var(--from) 14%,transparent); color:var(--from); font:700 16px Sora,sans-serif; }
+
+  @media (prefers-reduced-motion: reduce) { .k-launch { display:none; } .r, .k-step::before, .pen-mask { animation:none; stroke-dashoffset:0; } }
+</style>
+
+<h2>v2 : logo à la plume et façon de travailler détaillée</h2>
+<p class="subtitle">Le monogramme est maintenant écrit avec une plume biseautée simulée (pleins, déliés, attaque et sortie affinées). Le panneau « façon de travailler » est devenu une section complète avec les vrais chiffres de Kauri. « ↻ Rejouer » relance l'entrée.</p>
+
+<div class="k" id="k-root">
+  <button class="k-replay" onclick="var r=document.getElementById('k-root');var c=r.cloneNode(true);r.replaceWith(c);">↻ Rejouer</button>
+
+  <div class="k-launch">
+    <svg class="mono" data-animated="1" width="200" height="157" viewBox="0 0 140 110" aria-label="JT"></svg>
+    <div class="w">Jordan Taillefer</div>
+  </div>
+
+  <div class="k-nav r" style="--d:0ms">
+    <div class="k-brand"><svg class="mono" width="38" height="30" viewBox="0 0 140 110" aria-hidden="true"></svg>Jordan Taillefer</div>
+    <div class="k-links"><span>Projets</span><span>Méthode</span><span>Parcours</span><span style="color:var(--from)">Contact</span></div>
+  </div>
+
+  <div class="k-hero">
+    <div>
+      <div class="k-label r" style="--d:60ms">Product developer · Freelance · Limoges</div>
+      <div class="k-h1 r" style="--d:120ms">Je pense le produit.<br><span>L'IA accélère le reste.</span></div>
+      <p class="k-p r" style="--d:200ms">Fullstack TypeScript depuis 9 ans. Je remonte au vrai problème, je pose l'architecture, et j'utilise l'IA pour livrer vite, sans lâcher la main sur la qualité.</p>
+      <div class="k-ctas r" style="--d:280ms"><span class="k-btn p">Voir les projets</span><span class="k-btn s">Me contacter</span></div>
+    </div>
+    <div class="k-stats r" style="--d:340ms">
+      <div class="k-label" style="color:var(--dim)">Kauri, en chiffres</div>
+      <div class="grid">
+        <div class="k-stat"><b>927</b><span>commits</span></div>
+        <div class="k-stat"><b style="color:var(--swim)">24</b><span>specs de design écrites avant le code</span></div>
+        <div class="k-stat"><b style="color:var(--run)">36</b><span>plans d'implémentation</span></div>
+        <div class="k-stat"><b style="color:var(--from)">472</b><span>fichiers de tests</span></div>
+      </div>
+      <div class="foot">Un projet perso mené avec Claude Code, du cadrage au store mobile.</div>
+    </div>
+  </div>
+
+  <div class="k-sec">
+    <div class="k-sec-h r" style="--d:420ms">
+      <div><div class="k-label">Méthode</div><div class="k-h2">Augmenté, pas automatisé.</div></div>
+      <div class="k-h2-p">L'IA écrit beaucoup de code. Les décisions, elles, restent les miennes, et chacune laisse une trace dans le dépôt.</div>
+    </div>
+
+    <div class="k-flow">
+      <div class="k-step r" style="--d:480ms;--c:var(--swim)">
+        <div class="top"><span class="num">01</span><span class="tool">brainstorming</span></div>
+        <div class="t">Cadrer</div>
+        <div class="d">Avant la moindre ligne : <b>le pourquoi</b>, les non-objectifs, et ce qui ferait de la feature un échec même si elle « marche ».</div>
+        <div class="k-vis"><span class="m">docs/specs/</span><br><span class="b">2026-07-22-sync-</span><br><span class="b">calendrier-garmin-design.md</span><br><span class="m">## Anti-objectifs</span></div>
+        <div class="k-proof"><b>24</b> specs sur Kauri</div>
+      </div>
+      <div class="k-step r" style="--d:540ms;--c:var(--run)">
+        <div class="top"><span class="num">02</span><span class="tool">writing-plans</span></div>
+        <div class="t">Planifier</div>
+        <div class="d">La spec devient un plan de <b>petites tâches testables</b>, chacune assez claire pour qu'un agent la mène sans deviner.</div>
+        <div class="k-vis"><span class="g">✓</span> Task 1 · schéma Zod partagé<br><span class="g">✓</span> Task 2 · route Hono + test<br><span class="y">◐</span> Task 3 · écran mobile<br><span class="m">○ Task 4 · review finale</span></div>
+        <div class="k-proof"><b>36</b> plans exécutés</div>
+      </div>
+      <div class="k-step r" style="--d:600ms;--c:var(--from)">
+        <div class="top"><span class="num">03</span><span class="tool">Claude Code · TDD</span></div>
+        <div class="t">Exécuter</div>
+        <div class="d">Des agents en parallèle dans des <b>worktrees isolés</b>, chacun en TDD : test rouge d'abord, code ensuite.</div>
+        <div class="k-vis"><span class="rd">✗ sync garmin › dédoublonne</span><br><span class="m">  → implémentation…</span><br><span class="g">✓ sync garmin › dédoublonne</span><br><span class="g">✓ 18 passed</span> <span class="cur"></span></div>
+        <div class="k-proof"><b>472</b> fichiers de tests</div>
+      </div>
+      <div class="k-step r" style="--d:660ms;--c:var(--bike)">
+        <div class="top"><span class="num">04</span><span class="tool">code-review</span></div>
+        <div class="t">Relire &amp; verrouiller</div>
+        <div class="d">Rien ne merge sans relecture. Et quand une règle compte, <b>je la rends impossible à casser</b> plutôt que de la surveiller.</div>
+        <div class="k-vis"><span class="m">// tokens.ts</span><br><span class="m">// la dérive n'est pas</span><br><span class="m">// surveillée,</span> <span class="g">elle est</span><br><span class="g">// impossible.</span></div>
+        <div class="k-proof"><b>1</b> source de vérité design</div>
+      </div>
+    </div>
+
+    <div class="k-quote r" style="--d:740ms">
+      <div class="ic">✦</div>
+      <div><b>Et j'outille le reste.</b> 5 skills maison (commits facturables, daily, bilan mensuel, passage de relais entre sessions), un suivi de mes sessions Claude sur Stream Deck, un widget macOS d'usage. Je ne me contente pas d'utiliser l'IA : <b>je construis mon propre atelier.</b></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  // Centre du trait de chaque lettre, dans l'ordre où la main les écrit.
+  var STROKES = [
+    // J : chapeau, fût, boucle basse, sortie liée vers le T
+    { d: 'M 20 31 C 27 21 42 17 53 23 C 55 40 53 62 48 77 C 44 91 32 98 24 91 C 18 85 23 75 35 77 C 46 79 54 85 64 81', dur: 700, delay: 80 },
+    // T : barre ondulée, au-dessus du seul T
+    { d: 'M 68 31 C 77 22 90 22 101 26 C 113 31 123 28 133 19', dur: 460, delay: 820 },
+    // T : fût et petit fouet final
+    { d: 'M 101 27 C 99 44 97 61 95 73 C 93 83 97 89 104 87 C 110 85 114 80 117 75', dur: 420, delay: 1300 }
+  ];
+  var NIB = 4.3;                         // demi-largeur de la plume
+  var ANGLE = -35 * Math.PI / 180;       // plume tenue à 35°
+  var U = [Math.cos(ANGLE), Math.sin(ANGLE)];
+  var NS = 'http://www.w3.org/2000/svg';
+
+  function parse(d) {
+    var n = d.match(/-?\d*\.?\d+/g).map(Number), segs = [], p = [n[0], n[1]];
+    for (var i = 2; i + 5 < n.length; i += 6) {
+      var s = [p, [n[i], n[i + 1]], [n[i + 2], n[i + 3]], [n[i + 4], n[i + 5]]];
+      segs.push(s); p = s[3];
+    }
+    return segs;
+  }
+  function bez(s, t) {
+    var m = 1 - t, a = m * m * m, b = 3 * m * m * t, c = 3 * m * t * t, e = t * t * t;
+    return [a * s[0][0] + b * s[1][0] + c * s[2][0] + e * s[3][0], a * s[0][1] + b * s[1][1] + c * s[2][1] + e * s[3][1]];
+  }
+  function sample(d) {
+    var pts = [];
+    parse(d).forEach(function (s, k) { for (var i = k ? 1 : 0; i <= 70; i++) pts.push(bez(s, i / 70)); });
+    var L = [0];
+    for (var i = 1; i < pts.length; i++) L.push(L[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+    return { pts: pts, len: L };
+  }
+  // La plume biseautée : chaque pas du trait balaie le segment incliné de la plume.
+  // Attaque et sortie s'affinent, comme une plume qui se pose puis se lève.
+  function inkPath(d) {
+    var s = sample(d), P = s.pts, L = s.len, total = L[L.length - 1], out = '';
+    function h(i) { var r = Math.min(1, L[i] / 7, (total - L[i]) / 11); return NIB * (0.22 + 0.78 * Math.max(0, r)); }
+    for (var i = 0; i < P.length - 1; i++) {
+      var a = P[i], b = P[i + 1], ha = h(i), hb = h(i + 1);
+      var q = [[a[0] + U[0] * ha, a[1] + U[1] * ha], [b[0] + U[0] * hb, b[1] + U[1] * hb], [b[0] - U[0] * hb, b[1] - U[1] * hb], [a[0] - U[0] * ha, a[1] - U[1] * ha]];
+      var area = 0;
+      for (var j = 0; j < 4; j++) { var c = q[j], e = q[(j + 1) % 4]; area += c[0] * e[1] - e[0] * c[1]; }
+      if (area < 0) q.reverse();
+      out += 'M' + q.map(function (p) { return p[0].toFixed(2) + ' ' + p[1].toFixed(2); }).join('L') + 'Z';
+    }
+    return out;
+  }
+  function el(name, attrs) { var e = document.createElementNS(NS, name); for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
+
+  var INK = STROKES.map(function (s) { return inkPath(s.d); });
+
+  document.querySelectorAll('svg.mono').forEach(function (svg, n) {
+    var animated = svg.dataset.animated === '1', uid = 'jt' + n;
+    var defs = el('defs', {});
+    var grad = el('linearGradient', { id: uid + 'g', gradientUnits: 'userSpaceOnUse', x1: 10, y1: 20, x2: 130, y2: 95 });
+    grad.appendChild(el('stop', { offset: '0', 'stop-color': '#6EE7B7' }));
+    grad.appendChild(el('stop', { offset: '1', 'stop-color': '#58C9E8' }));
+    defs.appendChild(grad);
+    svg.appendChild(defs);
+    STROKES.forEach(function (s, i) {
+      var g = el('g', {});
+      if (animated) {
+        var m = el('mask', { id: uid + 'm' + i, maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: 140, height: 110 });
+        var mp = el('path', { d: s.d, fill: 'none', stroke: '#fff', 'stroke-width': 13, 'stroke-linecap': 'butt', pathLength: 1, 'stroke-dasharray': 1, 'stroke-dashoffset': 1, class: 'pen-mask' });
+        mp.style.setProperty('--dur', s.dur + 'ms');
+        mp.style.setProperty('--delay', s.delay + 'ms');
+        m.appendChild(mp); defs.appendChild(m);
+        g.setAttribute('mask', 'url(#' + uid + 'm' + i + ')');
+      }
+      g.appendChild(el('path', { d: INK[i], fill: 'url(#' + uid + 'g)' }));
+      // Un filet d'encre continu sous les déliés, pour qu'ils ne disparaissent jamais.
+      g.appendChild(el('path', { d: s.d, fill: 'none', stroke: 'url(#' + uid + 'g)', 'stroke-width': 0.9, 'stroke-linecap': 'round' }));
+      svg.appendChild(g);
+    });
+  });
+})();
+</script>
