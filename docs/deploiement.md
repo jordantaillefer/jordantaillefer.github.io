@@ -1,6 +1,6 @@
 # Déploiement
 
-Le site est statique (Astro) et hébergé sur **GitHub Pages** : https://jordantaillefer.github.io/
+Le site est statique (Astro, Node ≥ 24.22.1, pnpm 10.28.2) et hébergé sur **GitHub Pages** : https://jordantaillefer.github.io/
 
 Le workflow `.github/workflows/deploy.yml` build et déploie à chaque push sur `main`. GitHub ne fait qu'un `astro build` : tout ce qui dépend de ta machine (chiffres des dépôts, CV PDF, image OG) est généré en local et commité.
 
