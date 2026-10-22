@@ -28,7 +28,7 @@ const host = (url: string) => url.replace('https://', '').replace('www.', '').re
         <span>{cv.phone}</span>,
         <a href={site.contact.linkedin}>{host(site.contact.linkedin)}</a>,
         <a href={site.contact.github}>{host(site.contact.github)}</a>,
-        <a href="https://jordantaillefer.com">jordantaillefer.com</a>,
+        <a href="https://jordantaillefer.github.io">jordantaillefer.github.io</a>,
       ].map((item, i) => <>{i > 0 && <span class="sep"> · </span>}{item}</>)}
     </p>
 

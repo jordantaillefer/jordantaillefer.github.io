@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://jordantaillefer.com',
+  site: 'https://jordantaillefer.github.io',
   integrations: [
     sitemap({
       // Pages utilitaires : hors index.

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jordantaillefer.com/sitemap-index.xml
+Sitemap: https://jordantaillefer.github.io/sitemap-index.xml
