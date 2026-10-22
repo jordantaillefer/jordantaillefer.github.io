@@ -8,7 +8,7 @@
   --color-field: #171a22;
   --color-fg: #e9ecf2;
   --color-fg-2: #a8afbe;
-  --color-fg-dim: #6f7787;
+  --color-fg-dim: #8c94a5; /* Kauri : #6f7787, éclairci pour atteindre AA (4,5:1) sur surface et raise. */
   --color-accent-from: #6ee7b7;
   --color-accent-to: #58c9e8;
   --color-accent-ink: #0c231d;
