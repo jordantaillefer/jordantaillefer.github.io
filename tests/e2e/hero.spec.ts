@@ -26,3 +26,7 @@ test("pas de téléphone sur l'accueil", async ({ page }) => {
 test('date de mesure affichée', async ({ page }) => {
   await expect(page.locator('#hero')).toContainText('mesuré le');
 });
+
+test('la carte Emotion garde la nuance de la source', async ({ page }) => {
+  await expect(page.locator('#hero .stats')).toContainText('zéro régression avant la MEP');
+});

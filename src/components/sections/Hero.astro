@@ -8,10 +8,10 @@ const emotion = cases.find((study) => study.id === 'emotion')!;
 const metric = (study: typeof dsfr, label: string) => study.metrics.find((m) => m.label === label)!.after;
 
 const stats = [
-  { value: `×${Math.floor(growth.ratio)}`, label: `commits par mois, de 2025 à ${formatMonth(growth.peak.month)}`, color: 'var(--color-fg)' },
+  { value: `×${Math.floor(growth.ratio)}`, label: `commits par mois, de 2025 à ${formatMonth(growth.reference.month)}`, color: 'var(--color-fg)' },
   { value: metric(dsfr, 'Lignes supprimées'), label: 'lignes supprimées en retirant la bibliothèque DSFR', color: 'var(--color-blue)' },
   { value: metric(dsfr, 'Vues comparées au pixel'), label: 'vues comparées au pixel pour ne rien casser', color: 'var(--color-amber)' },
-  { value: metric(emotion, 'Fichiers modifiés'), label: 'fichiers migrés en une journée, zéro régression', color: 'var(--color-accent-from)' },
+  { value: metric(emotion, 'Fichiers modifiés'), label: 'fichiers migrés en une journée, zéro régression avant la MEP', color: 'var(--color-accent-from)' },
 ];
 ---
 

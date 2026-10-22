@@ -22,12 +22,15 @@ export function monthlySeries(dates: string[], from: string, now: Date): MonthPo
   return series;
 }
 
-/** Pic des mois complets rapporté à la moyenne mensuelle de l'année de référence. */
-export function multiplier(series: MonthPoint[], baselineYear: number): { ratio: number; baselineAvg: number; peak: MonthPoint } {
+/**
+ * Le dernier mois complet rapporté à la moyenne mensuelle de l'année de référence.
+ * Pas le meilleur mois : ce serait choisir le chiffre à son avantage.
+ */
+export function multiplier(series: MonthPoint[], baselineYear: number): { ratio: number; baselineAvg: number; reference: MonthPoint } {
   const complete = series.filter((point) => !point.partial);
   const baseline = complete.filter((point) => point.month.startsWith(`${baselineYear}-`));
-  if (baseline.length === 0) throw new Error(`Aucun mois complet en ${baselineYear}`);
-  const baselineAvg = baseline.reduce((sum, point) => sum + point.commits, 0) / baseline.length;
-  const peak = complete.reduce((best, point) => (point.commits > best.commits ? point : best));
-  return { ratio: peak.commits / baselineAvg, baselineAvg, peak };
+  const baselineAvg = baseline.length ? baseline.reduce((sum, point) => sum + point.commits, 0) / baseline.length : 0;
+  if (baselineAvg === 0) throw new Error(`Aucun commit sur les mois complets de ${baselineYear} : multiplicateur impossible`);
+  const reference = complete.at(-1)!;
+  return { ratio: reference.commits / baselineAvg, baselineAvg, reference };
 }

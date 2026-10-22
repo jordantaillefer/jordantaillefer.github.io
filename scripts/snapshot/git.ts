@@ -11,22 +11,33 @@ function git(repo: string, args: string[]): string {
   return execFileSync('git', ['-C', repo, ...args], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
 }
 
-export function readAuthorCommitDates(repo: string, authorPattern: string): string[] {
-  return git(repo, ['log', '--all', `--author=${authorPattern}`, '--format=%aI']).split('\n').filter(Boolean);
+export type Commit = { date: string; subject: string; category?: string };
+
+const SQUASH = /\(#\d+\)\s*$/;
+
+/**
+ * Les commits de travail de l'auteur, sans doublons : `--all` voit aussi les commits
+ * squash des PR (« … (#123) ») et les copies rebasées d'un même commit. Un lecteur
+ * qui recompte sur le dépôt public doit retrouver un ordre de grandeur honnête.
+ */
+export function readAuthorCommits(repo: string, authorPattern: string): Commit[] {
+  const seen = new Set<string>();
+  const commits: Commit[] = [];
+  const log = git(repo, ['log', '--all', `--author=${authorPattern}`, '--format=%x1e%aI%x1f%s%x1f%b']);
+  for (const record of log.split('\x1e')) {
+    if (!record.trim()) continue;
+    const [date, subject, body = ''] = record.split('\x1f');
+    if (SQUASH.test(subject)) continue;
+    const key = `${date.slice(0, 10)} ${subject}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    commits.push({ date, subject, category: /^Category:\s*(\S+)/m.exec(body)?.[1] });
+  }
+  return commits;
 }
 
 export function readCommitCount(repo: string): number {
   return git(repo, ['log', '--all', '--format=%h']).split('\n').filter(Boolean).length;
-}
-
-/** Les lignes `Category:` que commit-billable écrit dans le corps des commits. */
-export function readCategoryCounts(repo: string, authorPattern: string): Record<string, number> {
-  const counts: Record<string, number> = {};
-  for (const line of git(repo, ['log', '--all', `--author=${authorPattern}`, '--format=%b']).split('\n')) {
-    const match = /^Category:\s*(\S+)/.exec(line.trim());
-    if (match) counts[match[1]] = (counts[match[1]] ?? 0) + 1;
-  }
-  return counts;
 }
 
 export function countFiles(dir: string, pattern: RegExp): number {

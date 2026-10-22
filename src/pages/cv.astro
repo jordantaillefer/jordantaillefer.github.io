@@ -42,7 +42,7 @@ const host = (url: string) => url.replace('https://', '').replace('www.', '').re
       <h2>Mon travail actuel · Pilote (DITP)</h2>
       <p>{site.pilote.context} {site.pilote.role}</p>
       <p>
-        Commits par mois : {Math.round(growth.baselineAvg)} en moyenne en 2025, {growth.peak.commits} en {formatMonth(growth.peak.month)} (×{Math.floor(growth.ratio)}),
+        Commits par mois : {Math.round(growth.baselineAvg)} en moyenne en 2025, {growth.reference.commits} en {formatMonth(growth.reference.month)} (×{Math.floor(growth.ratio)}),
         avec {snapshot.pilote.categories.refactor} refactors pour {snapshot.pilote.categories.feature} features. Mesuré le {formatDay(snapshot.measuredAt)}.
       </p>
       <div class="cases">

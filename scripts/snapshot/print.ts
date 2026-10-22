@@ -16,10 +16,23 @@ export const CV_PDF = join(ROOT, 'public/cv/jordan-taillefer-cv.pdf');
 export const CV_FINGERPRINT = join(ROOT, 'public/cv/.fingerprint');
 export const OG_PNG = join(ROOT, 'public/og.png');
 
-/** Empreinte des données que montre /cv : si elle change, le PDF commité est périmé. */
+/** Les fichiers dont dépend le rendu de /cv, en plus des modules de contenu. */
+export const CV_SOURCES = [
+  'src/pages/cv.astro',
+  'src/layouts/Base.astro',
+  'src/components/Monogram.astro',
+  'src/lib/pen/render.ts',
+  'src/styles/tokens.css',
+  'src/styles/global.css',
+  'src/data/snapshot.ts',
+  'src/data/snapshot.json',
+];
+
+/** Empreinte de ce que montre /cv (données et mise en page) : si elle change, le PDF commité est périmé. */
 export function cvFingerprint(): string {
-  const snapshot = readFileSync(join(ROOT, 'src/data/snapshot.json'), 'utf8');
-  return createHash('sha256').update(JSON.stringify({ site, cv, cases, method, projects, workstation, snapshot })).digest('hex');
+  const hash = createHash('sha256').update(JSON.stringify({ site, cv, cases, method, projects, workstation }));
+  for (const file of CV_SOURCES) hash.update(readFileSync(join(ROOT, file)));
+  return hash.digest('hex');
 }
 
 async function waitFor(url: string, timeoutMs = 20_000): Promise<void> {

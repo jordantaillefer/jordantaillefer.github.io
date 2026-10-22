@@ -26,6 +26,7 @@ const label = `Commits de Jordan sur Pilote par mois, de ${formatMonth(series[0]
 ---
 
 <figure class="chart">
+  <div class="chart-scroll" tabindex="0" aria-label="Graphique défilant horizontalement">
   <svg data-chart viewBox={`0 0 ${width} ${TOP + CHART_H + 28}`} role="img" aria-label={label}>
     <defs>
       <linearGradient id="bar-fill" x1="0" y1="0" x2="0" y2="1">
@@ -70,10 +71,16 @@ const label = `Commits de Jordan sur Pilote par mois, de ${formatMonth(series[0]
       ))
     }
   </svg>
+  </div>
   <figcaption>Barre hachurée : mois en cours. Mesuré le {formatDay(measuredAt)}.</figcaption>
 </figure>
 
 <script>
+  // Sur un écran étroit le graphique défile : on l'ouvre sur les mois récents.
+  document.querySelectorAll<HTMLElement>('.chart-scroll').forEach((scroller) => {
+    scroller.scrollLeft = scroller.scrollWidth;
+  });
+
   // Les barres poussent quand le graphique entre à l'écran. Sans JS ou sous
   // « réduire les animations », elles sont simplement pleines.
   const charts = document.querySelectorAll<HTMLElement>('.chart');
@@ -97,7 +104,12 @@ const label = `Commits de Jordan sur Pilote par mois, de ${formatMonth(series[0]
 
 <style>
   .chart { margin: 0; }
-  svg { width: 100%; height: auto; overflow: visible; }
+  .chart-scroll { overflow-x: auto; overscroll-behavior-x: contain; }
+  svg { width: 100%; height: auto; overflow: visible; display: block; }
+  /* En dessous, le texte du SVG tomberait sous 10 px : le graphique garde sa taille et défile. */
+  @media (max-width: 700px) {
+    svg { min-width: 600px; }
+  }
   .bar { transform-box: fill-box; transform-origin: bottom; }
   :global(.chart.armed) .bar { transform: scaleY(0); }
   :global(.chart.in-view) .bar { animation: grow 420ms var(--ease-out) calc(var(--i) * 28ms) both; }

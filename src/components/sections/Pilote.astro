@@ -3,7 +3,7 @@ import CommitChart from '../CommitChart.astro';
 import CaseStudy from '../CaseStudy.astro';
 import { site } from '../../content/site';
 import { cases } from '../../content/cases';
-import { growth, snapshot } from '../../data/snapshot';
+import { formatMonth, growth, snapshot } from '../../data/snapshot';
 
 const { refactor, feature } = snapshot.pilote.categories;
 ---
@@ -20,7 +20,7 @@ const { refactor, feature } = snapshot.pilote.categories;
       <div class="growth-chart">
         <h3>Mes commits par mois sur Pilote</h3>
         <p class="growth-sub">
-          De {Math.round(growth.baselineAvg)} par mois en 2025 à {growth.peak.commits} en septembre 2026 : ×{Math.floor(growth.ratio)}.
+          De {Math.round(growth.baselineAvg)} par mois en moyenne en 2025 à {growth.reference.commits} en {formatMonth(growth.reference.month)} : ×{Math.floor(growth.ratio)}.
         </p>
         <CommitChart series={snapshot.pilote.series} measuredAt={snapshot.measuredAt} baselineAvg={growth.baselineAvg} />
       </div>

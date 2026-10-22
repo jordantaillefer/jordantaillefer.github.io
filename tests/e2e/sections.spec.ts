@@ -33,4 +33,5 @@ test('mentions légales', async ({ page }) => {
   await page.goto('/mentions-legales');
   await expect(page.locator('main')).toContainText('994876902');
   await expect(page.locator('main')).toContainText('Cloudflare');
+  await expect(page.locator('main')).toContainText('journaux');
 });

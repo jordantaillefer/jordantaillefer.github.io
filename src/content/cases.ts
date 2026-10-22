@@ -25,7 +25,7 @@ export const cases: CaseStudy[] = [
       { label: 'Dépendance retirée', after: '127 Mo' },
     ],
     controls: ['69 PR mergées', '1 160 tests unitaires', '980 tests d’intégration', '60 E2E', '5 revues en parallèle', '117 points de recette'],
-    lesson: "Un chantier qu'on repoussait depuis des années, mené en 16 jours parce que chaque lot était vérifié avant le suivant.",
+    lesson: 'Chaque lot était comparé au précédent, captures pleine page et styles calculés : tout écart était corrigé, ou validé et documenté.',
   },
   {
     id: 'emotion',

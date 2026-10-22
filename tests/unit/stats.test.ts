@@ -21,16 +21,22 @@ describe('courbe mensuelle', () => {
     expect(series[0].partial).toBe(false);
   });
 
-  it('le multiplicateur ignore le mois partiel', () => {
+  it('le multiplicateur compare au dernier mois complet, pas au meilleur ni au partiel', () => {
     const dates = [
       ...Array.from({ length: 12 }, (_, i) => datesFor(`2025-${String(i + 1).padStart(2, '0')}`, 40)).flat(),
+      ...datesFor('2026-08', 500),
       ...datesFor('2026-09', 458),
       ...datesFor('2026-10', 900),
     ];
     const series = monthlySeries(dates, '2025-01', new Date('2026-10-22T12:00:00'));
     const result = multiplier(series, 2025);
-    expect(result.peak.month).toBe('2026-09');
+    expect(result.reference.month).toBe('2026-09');
     expect(result.baselineAvg).toBe(40);
     expect(Math.floor(result.ratio)).toBe(11);
+  });
+
+  it('une année de référence vide lève au lieu de donner ×Infinity', () => {
+    const series = monthlySeries(datesFor('2026-09', 10), '2025-01', new Date('2026-10-22T12:00:00'));
+    expect(() => multiplier(series, 2025)).toThrow(/2025/);
   });
 });

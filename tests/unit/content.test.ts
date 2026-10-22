@@ -36,4 +36,9 @@ describe('contenus', () => {
       expect(study.lesson.length).toBeGreaterThan(0);
     }
   });
+
+  it("aucune affirmation sans source sur l'historique du chantier DSFR", () => {
+    const dsfr = cases.find((study) => study.id === 'dsfr')!;
+    expect(JSON.stringify(dsfr)).not.toMatch(/depuis des années/);
+  });
 });

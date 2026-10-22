@@ -4,120 +4,120 @@
     "series": [
       {
         "month": "2025-01",
-        "commits": 39,
+        "commits": 24,
         "partial": false
       },
       {
         "month": "2025-02",
-        "commits": 23,
+        "commits": 8,
         "partial": false
       },
       {
         "month": "2025-03",
-        "commits": 48,
-        "partial": false
-      },
-      {
-        "month": "2025-04",
-        "commits": 49,
-        "partial": false
-      },
-      {
-        "month": "2025-05",
-        "commits": 45,
-        "partial": false
-      },
-      {
-        "month": "2025-06",
-        "commits": 9,
-        "partial": false
-      },
-      {
-        "month": "2025-07",
-        "commits": 50,
-        "partial": false
-      },
-      {
-        "month": "2025-08",
-        "commits": 14,
-        "partial": false
-      },
-      {
-        "month": "2025-09",
-        "commits": 60,
-        "partial": false
-      },
-      {
-        "month": "2025-10",
-        "commits": 53,
-        "partial": false
-      },
-      {
-        "month": "2025-11",
         "commits": 29,
         "partial": false
       },
       {
+        "month": "2025-04",
+        "commits": 28,
+        "partial": false
+      },
+      {
+        "month": "2025-05",
+        "commits": 25,
+        "partial": false
+      },
+      {
+        "month": "2025-06",
+        "commits": 6,
+        "partial": false
+      },
+      {
+        "month": "2025-07",
+        "commits": 28,
+        "partial": false
+      },
+      {
+        "month": "2025-08",
+        "commits": 4,
+        "partial": false
+      },
+      {
+        "month": "2025-09",
+        "commits": 26,
+        "partial": false
+      },
+      {
+        "month": "2025-10",
+        "commits": 46,
+        "partial": false
+      },
+      {
+        "month": "2025-11",
+        "commits": 15,
+        "partial": false
+      },
+      {
         "month": "2025-12",
-        "commits": 20,
+        "commits": 9,
         "partial": false
       },
       {
         "month": "2026-01",
-        "commits": 20,
+        "commits": 1,
         "partial": false
       },
       {
         "month": "2026-02",
-        "commits": 42,
+        "commits": 19,
         "partial": false
       },
       {
         "month": "2026-03",
-        "commits": 161,
+        "commits": 127,
         "partial": false
       },
       {
         "month": "2026-04",
-        "commits": 250,
+        "commits": 211,
         "partial": false
       },
       {
         "month": "2026-05",
-        "commits": 123,
+        "commits": 106,
         "partial": false
       },
       {
         "month": "2026-06",
-        "commits": 134,
+        "commits": 102,
         "partial": false
       },
       {
         "month": "2026-07",
-        "commits": 297,
+        "commits": 261,
         "partial": false
       },
       {
         "month": "2026-08",
-        "commits": 251,
+        "commits": 103,
         "partial": false
       },
       {
         "month": "2026-09",
-        "commits": 458,
+        "commits": 290,
         "partial": false
       },
       {
         "month": "2026-10",
-        "commits": 468,
+        "commits": 287,
         "partial": true
       }
     ],
-    "totalCommits": 3378,
+    "totalCommits": 2245,
     "categories": {
-      "refactor": 677,
-      "feature": 413,
-      "bugfix": 334
+      "refactor": 317,
+      "feature": 198,
+      "bugfix": 157
     }
   },
   "kauri": {

@@ -7,7 +7,7 @@ export const snapshotSchema = z.object({
   pilote: z.object({
     series: z.array(monthPoint).min(1),
     totalCommits: z.number().int().positive(),
-    categories: z.object({ refactor: z.number().int(), feature: z.number().int(), bugfix: z.number().int() }),
+    categories: z.object({ refactor: z.number().int().positive(), feature: z.number().int().positive(), bugfix: z.number().int().nonnegative() }),
   }),
   kauri: z.object({
     commits: z.number().int().positive(),

@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { snapshotSchema, type Snapshot } from '../../src/data/snapshot.schema';
 import { monthlySeries } from '../../src/lib/stats';
-import { countFiles, readAuthorCommitDates, readCategoryCounts, readCommitCount } from './git';
+import { countFiles, readAuthorCommits, readCommitCount } from './git';
 
 export const PILOTE = join(homedir(), 'Documents/Missions/Projets/pilote-2');
 export const KAURI = join(homedir(), 'Documents/Projets/Kauri-v3');
@@ -19,16 +19,20 @@ function isoDay(date: Date): string {
 
 /** Lit les dépôts ; échoue plutôt que d'écrire des zéros. */
 export function buildSnapshot(paths: { pilote: string; kauri: string }, now: Date): Snapshot {
-  const dates = readAuthorCommitDates(paths.pilote, AUTHOR);
-  if (dates.length === 0) throw new Error(`Aucun commit de « ${AUTHOR} » dans ${paths.pilote}`);
-  const categories = readCategoryCounts(paths.pilote, AUTHOR);
+  const commits = readAuthorCommits(paths.pilote, AUTHOR);
+  if (commits.length === 0) throw new Error(`Aucun commit de « ${AUTHOR} » dans ${paths.pilote}`);
+  const count = (category: string) => commits.filter((commit) => commit.category === category).length;
+  const categories = { refactor: count('refactor'), feature: count('feature'), bugfix: count('bugfix') };
+  if (categories.refactor === 0 || categories.feature === 0) {
+    throw new Error(`Aucune ligne « Category: refactor|feature » dans les commits de ${paths.pilote} : format de commit-billable changé ?`);
+  }
   const docs = join(paths.kauri, 'docs/superpowers');
   return snapshotSchema.parse({
     measuredAt: isoDay(now),
     pilote: {
-      series: monthlySeries(dates, FROM, now),
-      totalCommits: dates.length,
-      categories: { refactor: categories.refactor ?? 0, feature: categories.feature ?? 0, bugfix: categories.bugfix ?? 0 },
+      series: monthlySeries(commits.map((commit) => commit.date), FROM, now),
+      totalCommits: commits.length,
+      categories,
     },
     kauri: {
       commits: readCommitCount(paths.kauri),
