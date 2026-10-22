@@ -19,7 +19,7 @@ function lineTone(kind: string, line: string): string {
       <p class="label">Méthode</p>
       <h2>Augmenté, pas automatisé.</h2>
       <p class="section-intro">
-        Un ticket, une commande, neuf étapes. L'IA écrit beaucoup de code ; les décisions restent les miennes, et chacune laisse une trace.
+        Un ticket, une commande, huit étapes. L'IA écrit beaucoup de code ; les décisions restent les miennes, et chacune laisse une trace.
       </p>
     </div>
 
@@ -33,7 +33,7 @@ function lineTone(kind: string, line: string): string {
             </div>
             <h3>{step.title}</h3>
             <p class="step-body">{step.body}</p>
-            {step.n === 9 ? (
+            {step.n === method.length ? (
               <blockquote class="quote">{methodQuote}</blockquote>
             ) : (
               <div class="visual" aria-hidden="true">
@@ -64,8 +64,8 @@ function lineTone(kind: string, line: string): string {
   .visual .ko { color: var(--color-coral); }
   .visual .new { color: var(--color-amber); }
   .visual .file { color: var(--color-blue); }
-  .step[data-step='9'] { grid-column: 1 / -1; background: linear-gradient(135deg, color-mix(in oklab, var(--color-accent-from) 10%, var(--color-surface)), var(--color-surface) 60%); }
-  .quote { margin-top: auto; font: 700 clamp(20px, 3vw, 28px)/1.2 var(--font-display); letter-spacing: var(--tracking-display-tight); }
+  .step:last-child { background: linear-gradient(135deg, color-mix(in oklab, var(--color-accent-from) 10%, var(--color-surface)), var(--color-surface) 60%); }
+  .quote { margin-top: auto; font: 700 20px/1.2 var(--font-display); letter-spacing: var(--tracking-display-tight); }
   .closing { margin-top: 18px; color: var(--color-fg-2); font-size: 14px; }
   @media (max-width: 1100px) { .steps { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 600px) { .steps { grid-template-columns: 1fr; } }

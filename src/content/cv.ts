@@ -22,7 +22,7 @@ export type Experience = {
 export const cv = {
   phone: '06 49 71 41 52',
   company: { name: 'EURL JORDAN TAILLEFER', siren: '994876902' },
-  stack: ['TypeScript', 'React', 'Next.js', 'Remix', 'Node.js', 'Hono', 'tRPC', 'Prisma', 'PostgreSQL', 'Expo', 'Tailwind', 'Vitest', 'Playwright', 'pnpm · Turborepo'],
+  stack: ['TypeScript', 'React', 'Next.js', 'Remix', 'Node.js', 'Hono', 'tRPC', 'Prisma', 'PostgreSQL', 'Expo', 'Tailwind', 'Vitest', 'Playwright', 'pnpm', 'Turborepo'],
   ai: ['Claude Code', 'Agents en parallèle', 'Git worktrees', 'Skills · hooks · MCP', 'Revues IA'],
   experiences: [
     {
@@ -43,7 +43,7 @@ export const cv = {
             "Assistant IA Albert : réponses à partir du centre d'aide, accès gérés en base par profil, usage mesuré dans Matomo.",
             'Génération du rapport détaillé en PDF sortie du thread principal (worker_thread, file d’attente) : un export lourd ne bloque plus le serveur.',
             'Payload d’une page Next divisé par près de deux (8,31 Mo → 4,47 Mo) avec un pattern Presenter, sous filet de tests snapshot.',
-            'Workflow ticket → PR industrialisé avec Claude Code : TDD, couverture E2E Playwright, GIF de démo dans la PR et Jira, revues IA puis humaines.',
+            'Workflow ticket → PR industrialisé avec Claude Code : TDD, couverture E2E Playwright, revues IA puis humaines.',
           ],
           stack: ['Next.js', 'React', 'TypeScript', 'tRPC', 'Prisma', 'Keycloak', 'Playwright', 'Matomo'],
         },

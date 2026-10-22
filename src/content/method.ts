@@ -6,13 +6,14 @@ export type MethodStep = {
   visual: { kind: 'file' | 'checklist' | 'terminal' | 'diff' | 'note'; lines: string[] };
 };
 
-// Le pipeline ticket → PR décrit dans le post LinkedIn « 9 étapes. 1 commande. Zéro truc oublié. »
+// Le pipeline ticket → PR du post LinkedIn « 9 étapes », sans le GIF de démo : les tests se font
+// désormais sur des protos live (décision de Jordan du 2026-10-22).
 export const method: MethodStep[] = [
   {
     n: 1,
     title: 'Contexte',
-    body: "L'agent lit le ticket Jira et on en discute. C'est le moment où je réfléchis vraiment : est-ce qu'on a bien cerné le problème, est-ce qu'il manque des cas ?",
-    tool: 'Jira · MCP',
+    body: "L'agent lit le ticket (Jira chez le client, Notion sur mes projets) et on en discute. C'est le moment où je réfléchis vraiment : est-ce qu'on a bien cerné le problème, est-ce qu'il manque des cas ?",
+    tool: 'Tickets · MCP',
     visual: { kind: 'note', lines: ['PIL-1871 · accès à l’assistant IA', '→ qui y a droit ?', '→ et si le profil est inconnu ?'] },
   },
   {
@@ -38,34 +39,27 @@ export const method: MethodStep[] = [
   },
   {
     n: 5,
-    title: 'GIF de démo',
-    body: "La vidéo du test devient un GIF ralenti, une bannière par étape. La PR se comprend en cinq secondes, le PO voit le comportement réel.",
-    tool: 'ffmpeg',
-    visual: { kind: 'file', lines: ['assets/demo/pil-1871.gif'] },
-  },
-  {
-    n: 6,
     title: 'Revue qualité',
     body: "Lint, revue de code par l'agent, corrections. Rien ne part avec un avertissement.",
     tool: 'code-review',
     visual: { kind: 'diff', lines: ['- if (profil) {', '+ if (!regleAcces(profil)) return refus'] },
   },
   {
-    n: 7,
+    n: 6,
     title: 'Pull request',
-    body: 'Commit, push, PR rédigée avec le lien Jira, le GIF et les tests documentés. Une revue automatique part en parallèle.',
+    body: 'Commit, push, PR rédigée avec le lien du ticket et les tests documentés. Une revue automatique part en parallèle.',
     tool: 'GitHub',
     visual: { kind: 'file', lines: ['feature(PIL-1871): accès Albert lu en base'] },
   },
   {
-    n: 8,
-    title: 'Jira à jour',
-    body: 'Le ticket reçoit la PR, le GIF et les critères d’acceptation. Personne n’a à demander « c’est quoi le comportement attendu ? ».',
-    tool: 'Jira · MCP',
-    visual: { kind: 'note', lines: ['PR · GIF · critères d’acceptation ✓'] },
+    n: 7,
+    title: 'Ticket à jour',
+    body: 'Le ticket reçoit la PR et les critères d’acceptation, dans le gestionnaire du projet : Jira, Notion… Personne n’a à demander « c’est quoi le comportement attendu ? ».',
+    tool: 'Tickets · MCP',
+    visual: { kind: 'note', lines: ['PR · critères d’acceptation ✓'] },
   },
   {
-    n: 9,
+    n: 8,
     title: 'La vraie review',
     body: 'Mes collègues arrivent sur une PR avec tout le contexte déjà là. Ils se concentrent sur ce qui mérite vraiment leur attention.',
     tool: 'humains',

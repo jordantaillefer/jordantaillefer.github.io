@@ -9,6 +9,11 @@ export const snapshotSchema = z.object({
     totalCommits: z.number().int().positive(),
     categories: z.object({ refactor: z.number().int().positive(), feature: z.number().int().positive(), bugfix: z.number().int().nonnegative() }),
   }),
+  allProjects: z.object({
+    repos: z.number().int().positive(),
+    totalCommits: z.number().int().positive(),
+    series: z.array(monthPoint).min(1),
+  }),
   kauri: z.object({
     commits: z.number().int().positive(),
     specs: z.number().int().nonnegative(),

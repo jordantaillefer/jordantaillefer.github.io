@@ -6,9 +6,23 @@ import { site } from '../../src/content/site';
 import { workstation } from '../../src/content/workstation';
 
 describe('contenus', () => {
-  it('9 étapes numérotées 1..9, la dernière est humaine', () => {
-    expect(method.map((step) => step.n)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-    expect(method[8].title).toMatch(/review/i);
+  it('8 étapes numérotées 1..8, la dernière est humaine', () => {
+    expect(method.map((step) => step.n)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+    expect(method.at(-1)!.title).toMatch(/review/i);
+  });
+
+  it("plus de GIF de démo : les tests se font sur des protos live", () => {
+    expect(JSON.stringify(method)).not.toMatch(/gif/i);
+  });
+
+  it("le gestionnaire de tickets n'est pas réduit à Jira", () => {
+    const ticketSteps = method.filter((step) => /ticket/i.test(step.title + step.tool));
+    expect(ticketSteps.length).toBeGreaterThan(0);
+    expect(JSON.stringify(method)).toMatch(/Notion/);
+  });
+
+  it('le portfolio lui-même figure dans les projets', () => {
+    expect(projects.some((project) => project.id === 'portfolio')).toBe(true);
   });
 
   it('pas de téléphone hors du CV', () => {

@@ -7,6 +7,9 @@ export const snapshot = snapshotSchema.parse(raw);
 
 export const growth = multiplier(snapshot.pilote.series, 2025);
 
+/** Le même calcul sur tous les dépôts, perso compris. */
+export const allGrowth = multiplier(snapshot.allProjects.series, 2025);
+
 const MONTHS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
 
 export function formatMonth(month: string): string {

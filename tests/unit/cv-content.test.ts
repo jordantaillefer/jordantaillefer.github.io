@@ -21,4 +21,13 @@ describe('contenu du CV', () => {
     expect(freelance.missions[0].client).toBe('Pilote · DITP');
     expect(freelance.missions[0].highlights.length).toBeGreaterThanOrEqual(5);
   });
+
+  it('pnpm et Turborepo sont deux tags distincts', () => {
+    expect(cv.stack).toContain('pnpm');
+    expect(cv.stack).toContain('Turborepo');
+  });
+
+  it("plus de GIF dans les réalisations", () => {
+    expect(JSON.stringify(cv.experiences)).not.toMatch(/gif/i);
+  });
 });

@@ -48,3 +48,16 @@ test('le parcours complet est présent', async ({ page }) => {
     await expect(page.locator('body')).toContainText(name);
   }
 });
+
+test('la sidebar garde les chiffres de parcours, avec le ×N tous projets', async ({ page }) => {
+  await page.goto('/cv');
+  const side = page.locator('.sheet-side').first();
+  await expect(side).not.toContainText('vues comparées au pixel');
+  await expect(side).not.toContainText('fichiers migrés');
+  await expect(side).toContainText('tous projets');
+});
+
+test('les contacts ont leurs icônes', async ({ page }) => {
+  await page.goto('/cv');
+  await expect(page.locator('.contact li svg')).toHaveCount(5);
+});
