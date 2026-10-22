@@ -178,7 +178,7 @@ Les chiffres de commits sont **figés au moment du build** par un script qui int
 
 - Rapide sur mobile. Polices auto-hébergées ou Google Fonts avec `display=swap`. Pas de framework JS lourd côté client (îlots Astro si besoin).
 - Accessible : contrastes du thème sombre vérifiés, focus visible, `prefers-reduced-motion` respecté, monogramme avec un `aria-label`.
-- L'écran de lancement **ne se joue qu'à la première visite de la session**, et doit pouvoir être passé (clic ou touche).
+- L'écran de lancement se joue **à chaque chargement de l'accueil, comme dans Kauri** (décision de Jordan du 2026-10-22, qui remplace « une fois par session »). Il doit pouvoir être passé (clic ou touche).
 - Meta Open Graph soignées, puisque le site sera partagé sur LinkedIn : une image de partage avec le monogramme et le hero.
 - Aucune donnée confidentielle de Pilote au-delà de ce qui est déjà public : chiffres agrégés, pas de code ni de captures de données réelles.
 
