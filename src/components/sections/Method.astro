@@ -1,0 +1,72 @@
+---
+import { method, methodClosing, methodQuote } from '../../content/method';
+
+const COLORS = ['var(--color-blue)', 'var(--color-accent-from)', 'var(--color-amber)', 'var(--color-amber)', 'var(--color-violet)', 'var(--color-coral)', 'var(--color-blue)', 'var(--color-violet)', 'var(--color-accent-from)'];
+
+function lineTone(kind: string, line: string): string {
+  if (/^✓/.test(line)) return 'ok';
+  if (/^✗/.test(line)) return 'ko';
+  if (kind === 'diff') return line.startsWith('+') ? 'ok' : line.startsWith('-') ? 'ko' : '';
+  if (/^\+/.test(line)) return 'new';
+  if (kind === 'file') return 'file';
+  return '';
+}
+---
+
+<section id="methode" class="section">
+  <div class="container">
+    <div class="section-head">
+      <p class="label">Méthode</p>
+      <h2>Augmenté, pas automatisé.</h2>
+      <p class="section-intro">
+        Un ticket, une commande, neuf étapes. L'IA écrit beaucoup de code ; les décisions restent les miennes, et chacune laisse une trace.
+      </p>
+    </div>
+
+    <ol class="steps">
+      {
+        method.map((step, i) => (
+          <li class="step" data-step={step.n} style={`--c:${COLORS[i]}`}>
+            <div class="step-top">
+              <span class="step-n">{String(step.n).padStart(2, '0')}</span>
+              <span class="step-tool">{step.tool}</span>
+            </div>
+            <h3>{step.title}</h3>
+            <p class="step-body">{step.body}</p>
+            {step.n === 9 ? (
+              <blockquote class="quote">{methodQuote}</blockquote>
+            ) : (
+              <div class="visual" aria-hidden="true">
+                {step.visual.lines.map((line) => (
+                  <div class={lineTone(step.visual.kind, line)}>{line}</div>
+                ))}
+              </div>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+    <p class="closing">{methodClosing}</p>
+  </div>
+</section>
+
+<style>
+  .steps { list-style: none; padding: 0; margin-top: 28px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .step { position: relative; overflow: hidden; background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius-lg); padding: 18px; box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: 10px; }
+  .step::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--c); }
+  .step-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .step-n { font: 700 13px var(--font-display); color: var(--c); }
+  .step-tool { font-size: 11px; font-weight: 600; color: var(--color-fg-2); background: var(--color-raise); border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
+  h3 { font-size: 19px; letter-spacing: var(--tracking-display); }
+  .step-body { font-size: 13.5px; color: var(--color-fg-2); line-height: 1.5; }
+  .visual { margin-top: auto; background: var(--color-field); border: 1px solid var(--color-line); border-radius: var(--radius-sm); padding: 10px 12px; font: 12px/1.65 var(--font-mono); color: var(--color-fg-2); white-space: pre-wrap; overflow-wrap: anywhere; }
+  .visual .ok { color: var(--color-accent-from); }
+  .visual .ko { color: var(--color-coral); }
+  .visual .new { color: var(--color-amber); }
+  .visual .file { color: var(--color-blue); }
+  .step[data-step='9'] { grid-column: 1 / -1; background: linear-gradient(135deg, color-mix(in oklab, var(--color-accent-from) 10%, var(--color-surface)), var(--color-surface) 60%); }
+  .quote { margin-top: auto; font: 700 clamp(20px, 3vw, 28px)/1.2 var(--font-display); letter-spacing: var(--tracking-display-tight); }
+  .closing { margin-top: 18px; color: var(--color-fg-2); font-size: 14px; }
+  @media (max-width: 1100px) { .steps { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .steps { grid-template-columns: 1fr; } }
+</style>
