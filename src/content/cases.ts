@@ -35,7 +35,7 @@ export const cases: CaseStudy[] = [
       "Trois librairies de style cohabitaient ; Emotion était la legacy. Le chantier aurait été chiffré XL au poker planning. L'agent a parcouru le code en respectant les conventions, des revues IA ont vérifié la cohérence, puis l'équipe a relu.",
     metrics: [
       { label: 'Fichiers modifiés', after: '256' },
-      { label: 'Lignes', after: '+1 423 / −6 087' },
+      { label: 'Lignes supprimées', after: '−6 087', note: 'pour 1 423 ajoutées' },
       { label: 'Durée', before: 'plusieurs semaines estimées', after: '1 journée' },
       { label: 'Régressions avant la MEP', after: '0' },
     ],

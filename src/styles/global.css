@@ -58,3 +58,8 @@ h1, h2, h3 { font-family: var(--font-display); letter-spacing: var(--tracking-di
 .button[data-variant='primary'] { background: var(--gradient-accent); color: var(--color-accent-ink); box-shadow: var(--shadow-glow); }
 .button[data-variant='secondary'] { background: var(--color-raise); color: var(--color-fg); border: 1px solid var(--color-line); }
 .button[data-variant='secondary']:hover { border-color: var(--color-fg-dim); }
+
+.section { padding-block: 56px; scroll-margin-top: 16px; }
+.section-head .label { color: var(--color-accent-from); }
+.section-head h2 { font-size: clamp(28px, 4vw, 36px); letter-spacing: var(--tracking-display-tight); margin-top: 8px; }
+.section-intro { margin-top: 12px; max-width: 680px; color: var(--color-fg-2); font-size: 16px; }
