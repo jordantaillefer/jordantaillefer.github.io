@@ -1,0 +1,38 @@
+---
+import type { Mission } from '../content/cv';
+
+interface Props {
+  mission: Mission;
+  /** La mission phare : contexte et réalisations un cran plus visibles. */
+  featured?: boolean;
+}
+
+const { mission, featured = false } = Astro.props;
+---
+
+<div class:list={['mission', { featured }]}>
+  <div class="mission-head">
+    <h4>{mission.client}</h4>
+    <span>{mission.period}</span>
+  </div>
+  <p class="mission-context">{mission.context}{mission.role && <> <b>{mission.role}</b></>}</p>
+  <ul>{mission.highlights.map((highlight) => <li>{highlight}</li>)}</ul>
+  <div class="mission-stack">{mission.stack.map((tech) => <span>{tech}</span>)}</div>
+</div>
+
+<style>
+  .mission { position: relative; padding: 0 0 9px 16px; border-left: 1.5px solid #e1e5ec; }
+  .mission::before { content: ''; position: absolute; left: -5px; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: #fff; border: 1.5px solid #6ee7b7; }
+  .mission.featured::before { background: #6ee7b7; }
+  .mission-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  h4 { font: 700 10.5pt var(--font-display); letter-spacing: -0.02em; }
+  .mission-head span { flex: none; font-size: 8pt; color: #6a7180; }
+  .mission-context { margin-top: 2px; font-size: 8.6pt; color: #4b5260; }
+  .mission-context b { color: #1b1d22; font-weight: 600; }
+  ul { margin-top: 4px; padding-left: 12px; font-size: 8.6pt; }
+  li { margin-top: 2px; }
+  li::marker { color: #0b6e52; }
+  .featured ul { font-size: 8.8pt; }
+  .mission-stack { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+  .mission-stack span { font-size: 7.4pt; font-weight: 600; color: #0b6e52; background: #ecf8f3; border-radius: 999px; padding: 1px 7px; }
+</style>

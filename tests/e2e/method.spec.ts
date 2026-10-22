@@ -5,8 +5,8 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-test('9 tuiles', async ({ page }) => {
-  await expect(page.locator('#methode [data-step]')).toHaveCount(9);
+test('8 tuiles', async ({ page }) => {
+  await expect(page.locator('#methode [data-step]')).toHaveCount(8);
 });
 
 test('la citation est présente', async ({ page }) => {

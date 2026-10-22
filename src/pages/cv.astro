@@ -2,144 +2,231 @@
 import Base from '../layouts/Base.astro';
 import Monogram from '../components/Monogram.astro';
 import { site } from '../content/site';
+import CvMission from '../components/CvMission.astro';
+import ContactIcon from '../components/ContactIcon.astro';
 import { cv } from '../content/cv';
-import { cases } from '../content/cases';
 import { method } from '../content/method';
 import { projects } from '../content/projects';
 import { workstation } from '../content/workstation';
-import { formatDay, formatMonth, growth, snapshot } from '../data/snapshot';
+import { allGrowth, formatDay, formatMonth, snapshot } from '../data/snapshot';
 
 const host = (url: string) => url.replace('https://', '').replace('www.', '').replace(/\/$/, '');
+const [freelance, octo, excilys] = cv.experiences;
+
+// La mise en page est fixée feuille par feuille : la sidebar sombre court ainsi en
+// pleine hauteur sur les deux pages, et un test vérifie que rien ne déborde.
+const octoPage1 = octo.missions.slice(0, 2);
+const octoPage2 = octo.missions.slice(2);
+
+const figures = [
+  { value: '9 ans', label: 'de développement fullstack, dont 4 chez OCTO Technology' },
+  {
+    value: `×${Math.floor(allGrowth.ratio)}`,
+    label: `commits par mois, tous projets, entre 2025 et ${formatMonth(allGrowth.reference.month)}`,
+  },
+];
+
+const contacts = [
+  { icon: 'email', label: site.contact.email, href: `mailto:${site.contact.email}` },
+  { icon: 'phone', label: cv.phone },
+  { icon: 'linkedin', label: host(site.contact.linkedin), href: site.contact.linkedin },
+  { icon: 'github', label: host(site.contact.github), href: site.contact.github },
+  { icon: 'site', label: 'jordantaillefer.github.io', href: 'https://jordantaillefer.github.io' },
+] as const;
 ---
 
 <Base title="CV · Jordan Taillefer" description="CV de Jordan Taillefer, product developer fullstack TypeScript." noindex>
-  <main class="cv">
-    <header class="cv-head">
-      <div>
-        <h1>{site.name}</h1>
-        <p class="role">{site.role} fullstack TypeScript · {site.status} · {site.location}</p>
-        <p class="pitch">{site.headline.join(' ')}</p>
-      </div>
-      <Monogram size={84} idPrefix="cv" />
-    </header>
-    <p class="contact">
-      {[
-        <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>,
-        <span>{cv.phone}</span>,
-        <a href={site.contact.linkedin}>{host(site.contact.linkedin)}</a>,
-        <a href={site.contact.github}>{host(site.contact.github)}</a>,
-        <a href="https://jordantaillefer.github.io">jordantaillefer.github.io</a>,
-      ].map((item, i) => <>{i > 0 && <span class="sep"> · </span>}{item}</>)}
-    </p>
+  <div class="sheets">
+    <article class="sheet">
+      <aside class="sheet-side">
+        <Monogram size={92} idPrefix="cv" />
+        <div>
+          <h1>Jordan<br />Taillefer</h1>
+          <p class="side-role">Product developer fullstack TypeScript</p>
+          <p class="side-status">{site.status} · {site.location}</p>
+        </div>
 
-    <section>
-      <h2>Profil</h2>
-      <p>{site.intro} {site.credibility}</p>
-      <p class="now"><strong>En ce moment :</strong> {site.now.text}.</p>
-    </section>
+        <section>
+          <h2>Contact</h2>
+          <ul class="contact">
+            {
+              contacts.map((contact) => (
+                <li>
+                  <ContactIcon name={contact.icon} />
+                  {'href' in contact ? <a href={contact.href}>{contact.label}</a> : <span>{contact.label}</span>}
+                </li>
+              ))
+            }
+          </ul>
+        </section>
 
-    <section>
-      <h2>Mon travail actuel · Pilote (DITP)</h2>
-      <p>{site.pilote.context} {site.pilote.role}</p>
-      <p>
-        Commits par mois : {Math.round(growth.baselineAvg)} en moyenne en 2025, {growth.reference.commits} en {formatMonth(growth.reference.month)} (×{Math.floor(growth.ratio)}),
-        avec {snapshot.pilote.categories.refactor} refactors pour {snapshot.pilote.categories.feature} features. Mesuré le {formatDay(snapshot.measuredAt)}.
-      </p>
-      <div class="cases">
-        {
-          cases.map((study) => (
-            <article>
-              <h3>{study.title} <span>· {study.period}</span></h3>
-              <ul>
-                {study.metrics.slice(0, 4).map((m) => (
-                  <li>
-                    {m.label} : {m.before && <s>{m.before}</s>} {m.before && '→ '}<strong>{m.after}</strong>
-                  </li>
-                ))}
-              </ul>
-              <p class="lesson">{study.lesson}</p>
-            </article>
-          ))
-        }
-      </div>
-      <p>{site.pilote.aiInProduct}</p>
-    </section>
+        <section>
+          <h2>En chiffres</h2>
+          {figures.map((figure) => <div class="figure"><b>{figure.value}</b><span>{figure.label}</span></div>)}
+        </section>
 
-    <section>
-      <h2>Méthode · augmenté, pas automatisé</h2>
-      <ol class="method">
-        {method.map((step) => <li><strong>{step.title}</strong> <span>({step.tool})</span></li>)}
-      </ol>
-      <p>Pendant que l'agent avance, je travaille sur une autre feature dans un autre worktree. L'IA prépare le terrain ; les humains décident.</p>
-    </section>
+        <section>
+          <h2>Stack</h2>
+          <div class="chips">{cv.stack.map((tech) => <span class="chip">{tech}</span>)}</div>
+        </section>
 
-    <section class="two">
-      <div>
-        <h2>Outillage</h2>
-        <ul>
-          {workstation.tools.map((tool) => <li><strong>{tool.name}</strong> · {tool.what}</li>)}
-          <li><strong>Skills Claude Code</strong> · {workstation.skills.map((s) => s.name).join(', ')}</li>
-        </ul>
-      </div>
-      <div>
-        <h2>Projets perso</h2>
-        <ul>
+        <section>
+          <h2>Développement augmenté</h2>
+          <div class="chips">{cv.ai.map((item) => <span class="chip chip-accent">{item}</span>)}</div>
+        </section>
+      </aside>
+
+      <main class="sheet-main">
+        <p class="pitch">{site.headline[0]} <span>{site.headline[1]}</span></p>
+        <p class="intro">{site.intro} {site.credibility}</p>
+
+        <h2 class="section-title">Expérience</h2>
+        <section class="job">
+          <header class="job-head">
+            <h3>{freelance.title} · {freelance.company}</h3>
+            <p class="job-meta">{freelance.period} · {freelance.location}</p>
+          </header>
+          {freelance.missions.map((mission) => <CvMission mission={mission} featured />)}
+        </section>
+
+        <section class="job">
+          <header class="job-head">
+            <h3>{octo.title} · {octo.company}</h3>
+            <p class="job-meta">{octo.period} · {octo.location}</p>
+          </header>
+          {octoPage1.map((mission) => <CvMission mission={mission} />)}
+        </section>
+      </main>
+    </article>
+
+    <article class="sheet">
+      <aside class="sheet-side">
+        <section>
+          <h2>Méthode</h2>
+          <ol class="method">{method.map((step) => <li><b>{step.title}</b></li>)}</ol>
+          <p class="side-quote">L'IA prépare le terrain. Les humains décident.</p>
+        </section>
+
+        <section>
+          <h2>Projets perso</h2>
           {
             projects.map((project) => (
-              <li>
-                <strong>{project.name}</strong> · {project.pitch}
-                {project.id === 'kauri' && ` ${snapshot.kauri.commits} commits, ${snapshot.kauri.specs} specs, ${snapshot.kauri.testFiles} fichiers de tests.`}
-                {project.url && <> <a href={project.url}>{host(project.url)}</a></>}
-              </li>
+              <div class="side-project">
+                <b>{project.name}</b>
+                <span>{project.pitch}</span>
+                {project.id === 'kauri' && (
+                  <span class="muted">
+                    {snapshot.kauri.commits} commits · {snapshot.kauri.specs} specs · {snapshot.kauri.testFiles} fichiers de tests
+                  </span>
+                )}
+                {project.url && <a href={project.url}>{host(project.url)}</a>}
+              </div>
             ))
           }
-        </ul>
-      </div>
-    </section>
+        </section>
 
-    <section>
-      <h2>Stack</h2>
-      <p class="stack">{cv.stack.join(' · ')}</p>
-    </section>
+        <section>
+          <h2>Outillage</h2>
+          <ul class="tools">
+            {workstation.tools.map((tool) => <li>{tool.name}</li>)}
+            <li>Skills : {workstation.skills.map((skill) => skill.name).join(', ')}</li>
+          </ul>
+        </section>
 
-    <footer class="cv-foot">
-      {site.credibility} {cv.company.name} · SIREN {cv.company.siren}.
-    </footer>
-  </main>
+        <p class="side-foot">{cv.company.name}<br />SIREN {cv.company.siren}<br />Chiffres mesurés le {formatDay(snapshot.measuredAt)}</p>
+      </aside>
+
+      <main class="sheet-main">
+        <section class="job">
+          <header class="job-head">
+            <h3>{octo.company} <span class="cont">(suite)</span></h3>
+            <p class="job-meta">{octo.period}</p>
+          </header>
+          {octoPage2.map((mission) => <CvMission mission={mission} />)}
+        </section>
+
+        <section class="job">
+          <header class="job-head">
+            <h3>{excilys.title} · {excilys.company}</h3>
+            <p class="job-meta">{excilys.period} · {excilys.location}</p>
+          </header>
+          {excilys.missions.map((mission) => <CvMission mission={mission} />)}
+        </section>
+      </main>
+    </article>
+  </div>
 </Base>
 
 <style is:global>
-  @page { size: A4; margin: 12mm; }
-  html:has(.cv), body:has(.cv) { background: #ffffff; color: #1b1d22; color-scheme: light; }
+  @page { size: A4; margin: 0; }
+  html:has(.sheets), body:has(.sheets) { background: #e9ebef; color: #1b1d22; color-scheme: light; }
+  @media print { html:has(.sheets), body:has(.sheets) { background: #fff; } }
 </style>
 
 <style>
-  .cv { --ink: #1b1d22; --muted: #575f6e; --accent: #0b6e52; --rule: #e3e6ec; max-width: 186mm; margin: 0 auto; padding: 24px 0; font-size: 10.5pt; line-height: 1.45; color: var(--ink); background: #fff; }
-  @media screen { .cv { padding: 32px 16px; } }
-  .cv-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-  h1 { font-size: 26pt; letter-spacing: -0.03em; }
-  .role { color: var(--accent); font-weight: 600; margin-top: 2px; }
-  .pitch { margin-top: 4px; font: 600 12pt var(--font-display); letter-spacing: -0.02em; }
-  .contact { margin-top: 10px; padding-bottom: 10px; border-bottom: 2px solid var(--accent); color: var(--muted); font-size: 9.5pt; }
+  .sheets { display: grid; gap: 24px; justify-content: center; padding: 24px 0; overflow-x: auto; }
+  @media print { .sheets { display: block; padding: 0; gap: 0; } }
+  .sheet {
+    width: 210mm;
+    height: 297mm;
+    display: grid;
+    grid-template-columns: 66mm 1fr;
+    background: #fff;
+    overflow: hidden;
+    break-after: page;
+    box-shadow: 0 10px 30px rgba(20, 22, 27, 0.18);
+  }
+  @media print { .sheet { box-shadow: none; } }
+  .sheet:last-child { break-after: auto; }
+
+  /* Sidebar : l'ADN du site */
+  .sheet-side {
+    background: var(--color-bg);
+    background-image: radial-gradient(90% 40% at 0% 0%, color-mix(in oklab, var(--color-accent-from) 12%, transparent), transparent 70%);
+    color: var(--color-fg);
+    padding: 13mm 8mm 10mm 9mm;
+    display: flex;
+    flex-direction: column;
+    gap: 6mm;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  h1 { font-size: 22pt; line-height: 1.02; letter-spacing: -0.04em; }
+  .side-role { margin-top: 6px; font: 600 9.5pt var(--font-display); color: var(--color-accent-from); letter-spacing: -0.01em; }
+  .side-status { font-size: 8.5pt; color: var(--color-fg-2); margin-top: 2px; }
+  .sheet-side h2 { font: 700 7pt var(--font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-fg-dim); margin-bottom: 3mm; }
+  .contact { list-style: none; padding: 0; display: grid; gap: 5px; font-size: 8.3pt; color: #c9cfdb; }
+  .contact li { display: flex; align-items: center; gap: 7px; }
+  .contact :global(svg) { flex: none; width: 13px; height: 13px; color: var(--color-accent-from); --icon-cut: var(--color-bg); }
   a { color: inherit; text-decoration: none; }
-  section { margin-top: 12px; break-inside: avoid; }
-  h2 { font-size: 11.5pt; letter-spacing: -0.01em; color: var(--accent); text-transform: uppercase; font-family: var(--font-body); font-weight: 600; margin-bottom: 4px; }
-  h3 { font-size: 10.5pt; }
-  h3 span { color: var(--muted); font-weight: 500; font-family: var(--font-body); }
-  p + p { margin-top: 4px; }
-  .now { color: var(--muted); }
-  .cases { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0; }
-  .cases article { border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; }
-  ul { padding-left: 14px; margin-top: 4px; }
-  li + li { margin-top: 2px; }
-  s { color: var(--muted); }
-  .lesson { margin-top: 6px; color: var(--muted); font-size: 9.5pt; }
-  .method { columns: 3; padding-left: 18px; margin-top: 4px; }
-  .method span { color: var(--muted); font-size: 9pt; }
-  .sep { white-space: pre; }
-  section.two { break-inside: auto; }
-  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .two li { font-size: 9.5pt; }
-  .stack { color: var(--muted); }
-  .cv-foot { margin-top: 14px; padding-top: 8px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 9pt; }
+  .figure { display: grid; grid-template-columns: 17mm 1fr; align-items: baseline; gap: 2mm; margin-bottom: 2.4mm; }
+  .figure b { font: 700 14pt var(--font-display); letter-spacing: -0.04em; color: var(--color-accent-from); }
+  .figure span { font-size: 7.8pt; line-height: 1.3; color: #c9cfdb; }
+  .chips { display: flex; flex-wrap: wrap; gap: 4px; }
+  .chip { font-size: 7.6pt; font-weight: 600; background: var(--color-raise); color: var(--color-fg); border-radius: 999px; padding: 2px 8px; }
+  .chip-accent { background: color-mix(in oklab, var(--color-accent-from) 18%, var(--color-raise)); }
+  .method { padding-left: 15px; display: grid; gap: 2px; font-size: 8.3pt; color: #c9cfdb; }
+  .method li::marker { color: var(--color-accent-from); font-weight: 700; }
+  .method b { color: var(--color-fg); font-weight: 600; }
+  .side-quote { margin-top: 3mm; font: 700 10pt/1.25 var(--font-display); letter-spacing: -0.02em; }
+  .side-project { display: grid; gap: 1px; margin-bottom: 3mm; font-size: 8pt; color: #c9cfdb; }
+  .side-project b { font: 700 9.5pt var(--font-display); color: var(--color-fg); }
+  .side-project a { color: var(--color-accent-from); }
+  .muted { color: var(--color-fg-dim); }
+  .tools { list-style: none; padding: 0; display: grid; gap: 3px; font-size: 8pt; color: #c9cfdb; }
+  .side-foot { margin-top: auto; font-size: 7pt; line-height: 1.5; color: var(--color-fg-dim); }
+
+  /* Colonne principale : le parcours */
+  .sheet-main { padding: 13mm 11mm 10mm 10mm; overflow: hidden; }
+  .pitch { font: 700 15pt/1.15 var(--font-display); letter-spacing: -0.03em; }
+  .pitch span { color: #0b6e52; }
+  .intro { margin-top: 2.5mm; font-size: 9pt; color: #4b5260; line-height: 1.45; }
+  .section-title { margin: 6mm 0 3mm; font: 700 8pt var(--font-body); letter-spacing: 0.14em; text-transform: uppercase; color: #0b6e52; padding-bottom: 1.5mm; border-bottom: 2px solid var(--color-accent-from); }
+  .job + .job { margin-top: 4mm; }
+  .job-head { margin-bottom: 2.5mm; }
+  .job-head h3 { font-size: 11.5pt; letter-spacing: -0.02em; }
+  .cont { font-weight: 500; color: #6a7180; font-size: 9pt; }
+  .job-meta { font-size: 8.3pt; color: #6a7180; margin-top: 1px; }
+  .job :global(.mission + .mission) { margin-top: 1.5mm; }
 </style>

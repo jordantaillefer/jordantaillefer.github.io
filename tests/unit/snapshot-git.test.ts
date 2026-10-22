@@ -32,7 +32,7 @@ describe('lecture des dépôts', () => {
     const git = (...args: string[]) => execFileSync('git', args, { cwd: repo });
     git('init', '-q');
     git('-c', 'user.name=Jordan Taillefer', '-c', 'user.email=j@example.com', 'commit', '-q', '--allow-empty', '-m', 'feat: sans métadonnées', '--date', '2025-03-01T10:00:00+01:00');
-    expect(() => buildSnapshot({ pilote: repo, kauri: repo }, new Date('2026-10-22'))).toThrow(/Category/);
+    expect(() => buildSnapshot({ pilote: repo, kauri: repo, roots: [] }, new Date('2026-10-22'))).toThrow(/Category/);
   });
 
   it("auteur sans commit → buildSnapshot refuse d'écrire", () => {
@@ -42,6 +42,27 @@ describe('lecture des dépôts', () => {
     writeFileSync(join(repo, 'a.txt'), 'a');
     git('add', '.');
     git('-c', 'user.name=Quelqu’un', '-c', 'user.email=autre@example.com', 'commit', '-qm', 'init');
-    expect(() => buildSnapshot({ pilote: repo, kauri: repo }, new Date('2026-10-22'))).toThrow(/aucun commit/i);
+    expect(() => buildSnapshot({ pilote: repo, kauri: repo, roots: [] }, new Date('2026-10-22'))).toThrow(/aucun commit/i);
+  });
+
+  it('compte aussi tous les dépôts perso trouvés sous les dossiers racines', () => {
+    const root = mkdtempSync(join(tmpdir(), 'racine-'));
+    const commitIn = (name: string, messages: string[]) => {
+      const repo = join(root, name);
+      execFileSync('mkdir', ['-p', repo]);
+      const git = (...args: string[]) => execFileSync('git', args, { cwd: repo });
+      git('init', '-q');
+      for (const message of messages) {
+        git('-c', 'user.name=Jordan Taillefer', '-c', 'user.email=j@example.com', 'commit', '-q', '--allow-empty', '-m', message, '--date', '2025-03-01T10:00:00+01:00');
+      }
+      return repo;
+    };
+    const pilote = commitIn('pilote', ['feat: a\n\nCategory: feature', 'refactor: b\n\nCategory: refactor']);
+    commitIn('perso', ['feat: c', 'feat: d', 'feat: e']);
+    execFileSync('mkdir', ['-p', join(pilote, 'docs/superpowers/specs'), join(pilote, 'docs/superpowers/plans')]);
+    execFileSync('mkdir', ['-p', join(root, 'pas-un-depot')]);
+    const snapshot = buildSnapshot({ pilote, kauri: pilote, roots: [root] }, new Date('2026-10-22'));
+    expect(snapshot.allProjects.repos).toBe(2);
+    expect(snapshot.allProjects.totalCommits).toBe(5);
   });
 });

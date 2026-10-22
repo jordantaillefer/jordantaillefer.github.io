@@ -24,6 +24,17 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    id: 'portfolio',
+    name: 'Ce portfolio',
+    pitch: 'Ce site et son CV : un monogramme écrit à la plume calculé au build, et des chiffres tirés de mes dépôts plutôt qu’écrits à la main.',
+    stack: ['Astro', 'TypeScript', 'Playwright', 'Claude Code'],
+    facts: [
+      'Construit avec Claude Code : spec, plan, TDD, puis une revue finale par un agent neuf.',
+      'Le CV PDF sort des mêmes données ; un test signale s’il n’est plus à jour.',
+    ],
+    repo: 'https://github.com/jordantaillefer/jordantaillefer.github.io',
+  },
+  {
     id: 'roue-noms',
     name: 'Roue des noms',
     pitch: "Le tirage au sort des rituels d'équipe (daily, tour de table), pensé pour les services de l'État.",

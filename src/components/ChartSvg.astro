@@ -1,0 +1,87 @@
+---
+import type { MonthPoint } from '../lib/stats';
+import { formatMonth } from '../data/snapshot';
+
+interface Props {
+  series: MonthPoint[];
+  baselineAvg: number;
+  /** Version mobile : moins de mois, texte agrandi pour rester lisible une fois réduit. */
+  compact?: boolean;
+}
+
+const { series, baselineAvg, compact = false } = Astro.props;
+
+const STEP = 30;
+const BAR = compact ? 20 : 18;
+const TOP = compact ? 34 : 28;
+const CHART_H = 180;
+const AXIS = compact ? 30 : 20;
+const width = series.length * STEP;
+const max = Math.max(...series.map((point) => point.commits));
+const y = (value: number) => TOP + CHART_H - (value / max) * CHART_H;
+const peak = series.filter((point) => !point.partial).reduce((best, point) => (point.commits > best.commits ? point : best));
+const quarterLabel = (month: string) => {
+  const [year, m] = month.split('-');
+  return ['01', '04', '07', '10'].includes(m) ? `${formatMonth(month).split(' ')[0]} ${year.slice(2)}` : '';
+};
+const label = `Commits de Jordan sur Pilote par mois, de ${formatMonth(series[0].month)} à ${formatMonth(series.at(-1)!.month)} : moyenne 2025 d'environ ${Math.round(baselineAvg)} par mois, pic à ${peak.commits} en ${formatMonth(peak.month)}. Le dernier mois est en cours.`;
+const gradientId = compact ? 'bar-fill-compact' : 'bar-fill';
+const patternId = compact ? 'bar-partial-compact' : 'bar-partial';
+---
+
+<svg data-chart class:list={{ compact }} viewBox={`0 0 ${width} ${TOP + CHART_H + AXIS + 8}`} role="img" aria-label={label}>
+  <defs>
+    <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6EE7B7"></stop>
+      <stop offset="1" stop-color="#6EE7B7" stop-opacity="0.25"></stop>
+    </linearGradient>
+    <pattern id={patternId} width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="6" height="6" fill="#6EE7B7" fill-opacity="0.12"></rect>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#6EE7B7" stroke-opacity="0.6" stroke-width="2"></line>
+    </pattern>
+  </defs>
+  <line class="baseline" x1="0" x2={width} y1={y(baselineAvg)} y2={y(baselineAvg)}></line>
+  <text class="baseline-label" x="4" y={y(baselineAvg) - 6}>moy. 2025 ≈ {Math.round(baselineAvg)}</text>
+  {
+    series.map((point, i) => (
+      <g>
+        <rect
+          class="bar"
+          data-month={point.month}
+          data-partial={point.partial ? '' : undefined}
+          x={i * STEP + (STEP - BAR) / 2}
+          y={y(point.commits)}
+          width={BAR}
+          height={Math.max(1, TOP + CHART_H - y(point.commits))}
+          rx="4"
+          fill={point.partial ? `url(#${patternId})` : `url(#${gradientId})`}
+          style={`--i:${i}`}
+        >
+          <title>{`${formatMonth(point.month)} : ${point.commits} commits${point.partial ? ' (mois en cours)' : ''}`}</title>
+        </rect>
+        {quarterLabel(point.month) && (
+          <text class="axis" x={i * STEP + STEP / 2} y={TOP + CHART_H + AXIS} text-anchor="middle">
+            {quarterLabel(point.month)}
+          </text>
+        )}
+        {point === peak && (
+          <text class="peak" x={i * STEP + STEP / 2} y={y(point.commits) - 8} text-anchor="middle">
+            {point.commits}
+          </text>
+        )}
+      </g>
+    ))
+  }
+</svg>
+
+<style>
+  svg { width: 100%; height: auto; overflow: visible; display: block; }
+  .bar { transform-box: fill-box; transform-origin: bottom; }
+  :global(.chart.armed) .bar { transform: scaleY(0); }
+  :global(.chart.in-view) .bar { animation: grow 420ms var(--ease-out) calc(var(--i) * 28ms) both; }
+  .baseline { stroke: var(--color-fg-dim); stroke-dasharray: 4 5; stroke-width: 1; }
+  .baseline-label, .axis { fill: var(--color-fg-dim); font: 500 11px var(--font-body); }
+  .peak { fill: var(--color-fg); font: 700 13px var(--font-display); }
+  .compact .baseline-label, .compact .axis { font-size: 15px; }
+  .compact .peak { font-size: 18px; }
+</style>

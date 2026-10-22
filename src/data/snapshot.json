@@ -109,16 +109,132 @@
       },
       {
         "month": "2026-10",
-        "commits": 287,
+        "commits": 290,
         "partial": true
       }
     ],
-    "totalCommits": 2245,
+    "totalCommits": 2248,
     "categories": {
-      "refactor": 317,
+      "refactor": 319,
       "feature": 198,
       "bugfix": 157
     }
+  },
+  "allProjects": {
+    "repos": 20,
+    "totalCommits": 3572,
+    "series": [
+      {
+        "month": "2025-01",
+        "commits": 25,
+        "partial": false
+      },
+      {
+        "month": "2025-02",
+        "commits": 8,
+        "partial": false
+      },
+      {
+        "month": "2025-03",
+        "commits": 29,
+        "partial": false
+      },
+      {
+        "month": "2025-04",
+        "commits": 39,
+        "partial": false
+      },
+      {
+        "month": "2025-05",
+        "commits": 33,
+        "partial": false
+      },
+      {
+        "month": "2025-06",
+        "commits": 15,
+        "partial": false
+      },
+      {
+        "month": "2025-07",
+        "commits": 49,
+        "partial": false
+      },
+      {
+        "month": "2025-08",
+        "commits": 4,
+        "partial": false
+      },
+      {
+        "month": "2025-09",
+        "commits": 26,
+        "partial": false
+      },
+      {
+        "month": "2025-10",
+        "commits": 49,
+        "partial": false
+      },
+      {
+        "month": "2025-11",
+        "commits": 16,
+        "partial": false
+      },
+      {
+        "month": "2025-12",
+        "commits": 18,
+        "partial": false
+      },
+      {
+        "month": "2026-01",
+        "commits": 18,
+        "partial": false
+      },
+      {
+        "month": "2026-02",
+        "commits": 47,
+        "partial": false
+      },
+      {
+        "month": "2026-03",
+        "commits": 157,
+        "partial": false
+      },
+      {
+        "month": "2026-04",
+        "commits": 359,
+        "partial": false
+      },
+      {
+        "month": "2026-05",
+        "commits": 336,
+        "partial": false
+      },
+      {
+        "month": "2026-06",
+        "commits": 106,
+        "partial": false
+      },
+      {
+        "month": "2026-07",
+        "commits": 419,
+        "partial": false
+      },
+      {
+        "month": "2026-08",
+        "commits": 166,
+        "partial": false
+      },
+      {
+        "month": "2026-09",
+        "commits": 775,
+        "partial": false
+      },
+      {
+        "month": "2026-10",
+        "commits": 384,
+        "partial": true
+      }
+    ]
   },
   "kauri": {
     "commits": 931,
